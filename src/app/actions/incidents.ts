@@ -1,22 +1,28 @@
 import { createAction } from 'redux-actions';
-import { TodoModel } from 'app/models';
+import { IncidentModel } from 'app/models';
 
-export namespace TodoActions {
+export namespace IncidentActions {
   export enum Type {
-    ADD_TODO = 'ADD_TODO',
-    EDIT_TODO = 'EDIT_TODO',
-    DELETE_TODO = 'DELETE_TODO',
-    COMPLETE_TODO = 'COMPLETE_TODO',
-    COMPLETE_ALL = 'COMPLETE_ALL',
-    CLEAR_COMPLETED = 'CLEAR_COMPLETED'
+    FETCH_INCIDENTS = 'FETCH_INCIDENTS',
+    FETCH_INCIDENTS_FAILED = 'FETCH_INCIDENTS_FAILED',
+    FETCH_INCIDENTS_SUCCESS = 'FETCH_INCIDENTS_SUCCESS',
+    FETCH_INCIDENT_DETAILS = 'FETCH_INCIDENT_DETAILS',
+    FETCH_INCIDENT_DETAILS_FAILED = 'FETCH_INCIDENT_DETAILS_FAILED',
+    FETCH_INCIDENT_DETAILS_SUCCESS = 'FETCH_INCIDENT_DETAILS_SUCCESS',
+    POST_INCIDENT = 'POST_INCIDENT',
+    POST_INCIDENT_FAILED = 'POST_INCIDENT_FAILED',
+    POST_INCIDENT_SUCCESS = 'POST_INCIDENT_SUCCESS'
   }
 
-  export const addTodo = createAction<PartialPick<TodoModel, 'text'>>(Type.ADD_TODO);
-  export const editTodo = createAction<PartialPick<TodoModel, 'id'>>(Type.EDIT_TODO);
-  export const deleteTodo = createAction<TodoModel['id']>(Type.DELETE_TODO);
-  export const completeTodo = createAction<TodoModel['id']>(Type.COMPLETE_TODO);
-  export const completeAll = createAction(Type.COMPLETE_ALL);
-  export const clearCompleted = createAction(Type.CLEAR_COMPLETED);
+  export const fetchIncidents = createAction(Type.FETCH_INCIDENTS);
+  export const fetchIncidentsFailed = createAction(Type.FETCH_INCIDENTS_FAILED);
+  export const fetchIncidentsSuccess = createAction(Type.FETCH_INCIDENTS_SUCCESS);
+  export const fetchIncidentDetails = createAction<PartialPick<IncidentModel, 'id'>>(Type.FETCH_INCIDENT_DETAILS);
+  export const fetchIncidentDetailsFailed = createAction(Type.FETCH_INCIDENT_DETAILS_FAILED);
+  export const fetchIncidentDetailsSuccess = createAction(Type.FETCH_INCIDENT_DETAILS_SUCCESS);
+  export const postIncident = createAction(Type.POST_INCIDENT);
+  export const postIncidentFailed = createAction(Type.POST_INCIDENT_FAILED);
+  export const postIncidentSuccess = createAction(Type.POST_INCIDENT_SUCCESS);
 }
 
-export type TodoActions = Omit<typeof TodoActions, 'Type'>;
+export type IncidentActions = Omit<typeof IncidentActions, 'Type'>;
