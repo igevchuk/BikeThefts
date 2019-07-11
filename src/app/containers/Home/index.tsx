@@ -37,8 +37,8 @@ export class Home extends React.Component<Home.Props> {
 
   render() {
     const { incidents } = this.props;
-    console.log(2452, incidents)
-    const filteredIncidents = incidents || [1, 2, 3];
+
+    const filteredIncidents = incidents;
 
     return (
       <div className='home'>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as style from './style.css';
 import { IncidentActions } from 'app/actions/incidents';
-// import { TodoItem } from '../TodoItem';
+import { IncidentListItem } from '../IncidentListItem';
 import { IncidentModel } from 'app/models/IncidentModel';
 
 export namespace IncidentList {
@@ -18,8 +18,8 @@ export class IncidentList extends React.Component<IncidentList.Props> {
     return (
       <section className='incident-list'>
         <ul className={style.normal}>
-          {incidents.map((incident, index) => (
-            <li key={index}>Incident</li>
+          {incidents.map(incident => (
+            <IncidentListItem {...incident} key={incident.id} />
           ))}
         </ul>
       </section>
