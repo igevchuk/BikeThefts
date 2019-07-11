@@ -35,3 +35,8 @@ export interface MediaModel {
   image_url_thumb: string
 }
 
+export interface AppState {
+  incidents: IncidentModel[],
+  isLoading: boolean
+}
+

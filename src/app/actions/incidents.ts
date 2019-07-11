@@ -1,6 +1,7 @@
 import { createAction } from 'redux-actions';
 import { createActionThunk } from 'redux-thunk-actions';
 import { IncidentModel } from 'app/models';
+import { Dispatch } from 'redux';
 
 
 const fetchUrl = (url: string) => fetch(url);
@@ -30,7 +31,27 @@ export namespace IncidentActions {
   // export const postIncidentFailed = createAction(Type.POST_INCIDENT_FAILED);
   // export const postIncidentSuccess = createAction(Type.POST_INCIDENT_SUCCESS);
 
-  export const fetchIncidents = createActionThunk(Type.FETCH_INCIDENTS_STARTED, () => fetchUrl('https://bikewise.org/api/v2/incidents'));
+  export const fetchIncidents = () => (
+    (dispatch: Dispatch) =>  fetchUrl('https://bikewise.org/api/v2/incidents')
+    .then(payload => payload.json())
+      .then(json => dispatch(fetchIncidentsSucceded(json)),
+    error => dispatch(fetchIncidentsFailed(error))
+  ));
+
+  export const fetchIncidentsSucceded = (payload: any) => ({
+    type: Type.FETCH_INCIDENTS_SUCCESSED,
+    payload
+  });
+
+  export const fetchIncidentsFailed = (error: any) => ({
+    type: Type.FETCH_INCIDENTS_FAILED,
+    error
+  });
+
+  // export const fetchIncidents = createActionThunk(
+  //   Type.FETCH_INCIDENTS_STARTED,
+  //   () => fetchUrl('https://bikewise.org/api/v2/incidents')
+  // );
   export const fetchIncidentDetails = createActionThunk<PartialPick<IncidentModel, 'id'>>(
     Type.FETCH_INCIDENT_DETAILS_STARTED,
     (id) => fetchUrl(`https://bikewise.org/api/v2/incidents/${id}`)

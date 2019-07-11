@@ -5,7 +5,7 @@ import { IncidentModel } from 'app/models';
 
 const initialState: RootState.IncidentState = [];
 
-export const incidentReducer = handleActions<RootState.IncidentState, IncidentModel>(
+export const incidentReducer = handleActions<RootState.IncidentState, any>(
   {
     [IncidentActions.Type.FETCH_INCIDENTS_STARTED]: (state, action) => {
       return state;
@@ -14,7 +14,12 @@ export const incidentReducer = handleActions<RootState.IncidentState, IncidentMo
       return state;
     },
     [IncidentActions.Type.FETCH_INCIDENTS_SUCCESSED]: (state, action) => {
-      return state;
+      if(!action || !action.payload || !action.payload.incidents) {
+        return state;
+      }
+
+      const { incidents } = action.payload;
+      return [...incidents];
     },
   },
   initialState
