@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as style from './style.css';
 import { IncidentActions } from 'app/actions/incidents';
-import { IncidentListItem } from '../IncidentListItem';
+import { IncidentListItem } from 'app/components/IncidentListItem';
 import { IncidentModel } from 'app/models/IncidentModel';
 
 export namespace IncidentList {
@@ -17,9 +17,9 @@ export class IncidentList extends React.Component<IncidentList.Props> {
 
     return (
       <section className='incident-list'>
-        <ul className={style.normal}>
+        <ul>
           {incidents.map(incident => (
-            <IncidentListItem {...incident} key={incident.id} />
+            <IncidentListItem incident={incident} key={incident.id} />
           ))}
         </ul>
       </section>

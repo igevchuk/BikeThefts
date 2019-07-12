@@ -5,21 +5,17 @@ import {
   ItemContainer,
   ImageContainer,
   ContentContainer,
-  StyledLink,
+  // StyledLink,
 } from './styled'
+
+const BikePlaceholder =  require('./assets/bike-placeholder.png');
+
 // import { TodoActions } from 'app/actions';
 // import { TodoTextInput } from '../TodoTextInput';
 
 export namespace IncidentListItem {
   export interface Props {
-    // incident: IncidentModel;
-    title: string;
-    description: string;
-    media: { image_url_thumb: string },
-    occurred_at: Date,
-    updated_at: string,
-    address: string,
-    id: number
+    incident: IncidentModel;
   }
 
   export interface State {
@@ -47,7 +43,7 @@ export class IncidentListItem extends React.Component<IncidentListItem.Props, In
   // }
 
   render() {
-    const {
+    const {incident: {
       title,
       description,
       media: { image_url_thumb },
@@ -55,7 +51,7 @@ export class IncidentListItem extends React.Component<IncidentListItem.Props, In
       updated_at,
       address,
       id,
-    } = this.props;
+    }} = this.props;
 
     return (
       <ItemContainer>
@@ -64,19 +60,19 @@ export class IncidentListItem extends React.Component<IncidentListItem.Props, In
           fallback={BikePlaceholder}
         />
         <ContentContainer>
-          <H3>
-            <StyledLink to={`/incidents/${id}`}>{title}</StyledLink>
-          </H3>
-          <FixedDescription>{description || 'No description'}</FixedDescription>
-          <P>
-            {format(new Date(occurred_at * 1000), 'MMMM dd yyyy')}
+          <h3>
+            <a href={`/incidents/${id}`}>{title}</a>
+          </h3>
+          <div>{description || 'No description'}</div>
+          <p>
+            {/* {format(new Date(occurred_at * 1000), 'MMMM dd yyyy')} */}
             {' - '}
             {address}
-          </P>
-          <P>
+          </p>
+          <p>
             {'Reported: '}
-            {format(new Date(updated_at * 1000), 'MMMM dd yyyy')}
-          </P>
+            {/* {format(new Date(updated_at * 1000), 'MMMM dd yyyy')} */}
+          </p>
         </ContentContainer>
       </ItemContainer>
     );
