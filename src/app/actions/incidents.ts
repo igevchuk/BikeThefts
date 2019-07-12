@@ -32,7 +32,7 @@ export namespace IncidentActions {
   // export const postIncidentSuccess = createAction(Type.POST_INCIDENT_SUCCESS);
 
   export const fetchIncidents = () => (
-    (dispatch: Dispatch) =>  fetchUrl('https://bikewise.org/api/v2/incidents')
+    (dispatch: Dispatch) =>  fetchUrl('https://bikewise.org/api/v2/incidents?incident_type=theft')
     .then(payload => payload.json())
       .then(json => dispatch(fetchIncidentsSucceded(json)),
     error => dispatch(fetchIncidentsFailed(error))

@@ -18,10 +18,12 @@ export interface IncidentModel {
   address: string;
   description: string;
   id: number;
+  frame_colors: string[],
   location_description: string;
   location_type: string;
   media: MediaModel;
   occurred_at: Date;
+  serial: string,
   source: string;
   title: string
   type: string;

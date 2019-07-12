@@ -1,80 +1,63 @@
 import * as React from 'react';
-import * as classNames from 'classnames';
+import * as moment from 'moment';
 import { IncidentModel } from 'app/models';
 import {
-  ItemContainer,
-  ImageContainer,
-  ContentContainer,
-  // StyledLink,
+  IncidentContainer,
+  IncidentImage,
+  IncidentContent,
+  IncidentTitle,
+  IncidentLink,
+  IncidentInfo
 } from './styled'
 
 const BikePlaceholder =  require('./assets/bike-placeholder.png');
 
-// import { TodoActions } from 'app/actions';
-// import { TodoTextInput } from '../TodoTextInput';
 
-export namespace IncidentListItem {
+namespace IncidentListItem {
   export interface Props {
     incident: IncidentModel;
   }
-
-  export interface State {
-    // editing: boolean;
-  }
 }
 
-export class IncidentListItem extends React.Component<IncidentListItem.Props, IncidentListItem.State> {
-  constructor(props: IncidentListItem.Props, context?: any) {
-    super(props, context);
-    // this.state = { editing: false };
+export const IncidentListItem:React.SFC<IncidentListItem.Props> = ({ incident }) => {
+  const {
+    title,
+    media: { image_url_thumb },
+    occurred_at,
+    updated_at,
+    address,
+    id
+  } = incident;
+
+  const formatDate = (value: Date, format: string = 'LLL') => {
+    return moment(value).format(format);
   }
 
-  // handleDoubleClick() {
-  //   this.setState({ editing: true });
-  // }
+  return (
+    <IncidentContainer className='incident'>
+      <IncidentImage
+        className='incident-image'
+        image={image_url_thumb || BikePlaceholder}
+        fallback={BikePlaceholder}
+      />
 
-  // handleSave(id: number, text: string) {
-  //   if (text.length === 0) {
-  //     this.props.deleteTodo(id);
-  //   } else {
-  //     this.props.editTodo({ id, text });
-  //   }
-  //   this.setState({ editing: false });
-  // }
+      <IncidentContent className='incident-content'>
+        <IncidentTitle className='incident-title'>
+          <IncidentLink className='incident-link' href={`/incidents/${id}`}>{title}</IncidentLink>
+        </IncidentTitle>
 
-  render() {
-    const {incident: {
-      title,
-      description,
-      media: { image_url_thumb },
-      occurred_at,
-      updated_at,
-      address,
-      id,
-    }} = this.props;
+        <IncidentInfo className='incident-info'>
+          <b>Stolen:</b> {formatDate(occurred_at)}
+        </IncidentInfo>
 
-    return (
-      <ItemContainer>
-        <ImageContainer
-          image={image_url_thumb || BikePlaceholder}
-          fallback={BikePlaceholder}
-        />
-        <ContentContainer>
-          <h3>
-            <a href={`/incidents/${id}`}>{title}</a>
-          </h3>
-          <div>{description || 'No description'}</div>
-          <p>
-            {/* {format(new Date(occurred_at * 1000), 'MMMM dd yyyy')} */}
-            {' - '}
-            {address}
-          </p>
-          <p>
-            {'Reported: '}
-            {/* {format(new Date(updated_at * 1000), 'MMMM dd yyyy')} */}
-          </p>
-        </ContentContainer>
-      </ItemContainer>
-    );
-  }
+        <IncidentInfo className='incident-info'>
+          <b>Reported:</b> {formatDate(updated_at)}
+        </IncidentInfo>
+
+        <IncidentInfo className='incident-info'>
+          <b>Location:</b> {address}
+        </IncidentInfo>
+      </IncidentContent>
+    </IncidentContainer>
+  );
 }

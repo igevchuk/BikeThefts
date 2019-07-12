@@ -1,16 +1,15 @@
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 
-export const ItemContainer = styled.div`
+export const IncidentContainer = styled.div`
+  background-color: #ffffff;
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
-  height: 220px;
-  border-radius: 5px;
-  margin-bottom: 16px;
-`
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 2px #ccc;
+`;
 
-export const ImageContainer = styled.div`
+export const IncidentImage = styled.div`
   width: 220px;
   height: 214px;
   flex-grow: 0;
@@ -21,15 +20,26 @@ export const ImageContainer = styled.div`
   }: {
   image: string
   fallback: string
-  }) => `url(${image})`};
+  }) => `url(${image}), url(${fallback})`};
+  background-color: #f5f5f5;
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: left center;
-`
+  background-position: center center;
+`;
 
-export const ContentContainer = styled.div`
+export const IncidentContent = styled.div`
   padding: 12px;
-`
+`;
 
-// @ts-ignore
-// export const StyledLink = styled(Link)``
+export const IncidentTitle = styled.h3``;
+
+export const IncidentLink = styled.a`
+  color: ${props => props.theme.primaryColor};
+  text-decoration: none;
+`;
+
+export const IncidentInfo = styled.div`
+  margin-bottom: 0.5rem;
+  line-height: 16px;
+`;
+
