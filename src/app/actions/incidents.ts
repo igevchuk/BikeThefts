@@ -1,8 +1,8 @@
 import { createAction } from 'redux-actions';
 import { createActionThunk } from 'redux-thunk-actions';
+import * as queryString from 'query-string';
 import { IncidentModel } from 'app/models';
 import { Dispatch } from 'redux';
-
 
 const fetchUrl = (url: string) => fetch(url);
 
@@ -15,28 +15,26 @@ export namespace IncidentActions {
     FETCH_INCIDENT_DETAILS_STARTED = 'FETCH_INCIDENT_DETAILS_STARTED',
     FETCH_INCIDENT_DETAILS_FAILED = 'FETCH_INCIDENT_DETAILS_FAILED',
     FETCH_INCIDENT_DETAILS_SUCCESSED = 'FETCH_INCIDENT_DETAILS_SUCCESSED',
-    FETCH_INCIDENT_DETAILS_ENDED = 'FETCH_INCIDENT_DETAILS_ENDED',
-    // POST_INCIDENT = 'POST_INCIDENT',
-    // POST_INCIDENT_FAILED = 'POST_INCIDENT_FAILED',
-    // POST_INCIDENT_SUCCESS = 'POST_INCIDENT_SUCCESS'
+    FETCH_INCIDENT_DETAILS_ENDED = 'FETCH_INCIDENT_DETAILS_ENDED'
   }
 
-  // export const fetchIncidents = createAction(Type.FETCH_INCIDENTS);
-  // export const fetchIncidentsFailed = createAction(Type.FETCH_INCIDENTS_FAILED);
-  // export const fetchIncidentsSuccess = createAction(Type.FETCH_INCIDENTS_SUCCESS);
-  // // export const fetchIncidentDetails = createAction<PartialPick<IncidentModel, 'id'>>(Type.FETCH_INCIDENT_DETAILS);
-  // export const fetchIncidentDetailsFailed = createAction(Type.FETCH_INCIDENT_DETAILS_FAILED);
-  // export const fetchIncidentDetailsSuccess = createAction(Type.FETCH_INCIDENT_DETAILS_SUCCESS);
-  // export const postIncident = createAction(Type.POST_INCIDENT);
-  // export const postIncidentFailed = createAction(Type.POST_INCIDENT_FAILED);
-  // export const postIncidentSuccess = createAction(Type.POST_INCIDENT_SUCCESS);
+  // export enum DefaultParameters {
+  //   page = '1',
+  //   per_page = 10,
+  //   incident_type = 'theft',
+  //   proximity = 'Kiev',
+  //   proximity_square = 100
+  // }
 
-  export const fetchIncidents = () => (
-    (dispatch: Dispatch) =>  fetchUrl('https://bikewise.org/api/v2/incidents?incident_type=theft')
+  export const fetchIncidents = (queryOptions = {}) => {
+    const parameters = { incident_type: 'theft', ...queryOptions };
+    const stringified = queryString.stringify(parameters);
+
+    return (dispatch: Dispatch) =>  fetchUrl(`https://bikewise.org/api/v2/incidents?${stringified}`)
     .then(payload => payload.json())
       .then(json => dispatch(fetchIncidentsSucceded(json)),
-    error => dispatch(fetchIncidentsFailed(error))
-  ));
+    error => dispatch(fetchIncidentsFailed(error)))
+  };
 
   export const fetchIncidentsSucceded = (payload: any) => ({
     type: Type.FETCH_INCIDENTS_SUCCESSED,

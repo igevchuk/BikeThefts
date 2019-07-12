@@ -37,13 +37,13 @@ export class Home extends React.Component<Home.Props> {
   }
 
   render() {
-    const { incidents } = this.props;
+    const { incidents, actions } = this.props;
 
     const filteredIncidents = incidents;
 
     return (
       <div className='home'>
-        <Search />
+        <Search onSearch={actions.fetchIncidents} />
         <IncidentList incidents={filteredIncidents} />
       </div>
     );

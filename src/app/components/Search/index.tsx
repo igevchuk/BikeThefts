@@ -1,22 +1,20 @@
 import * as React from 'react';
 import * as _ from 'lodash';
 import { Search as SemanticSearch } from 'semantic-ui-react';
-
-// import * as classNames from 'classnames';
-// import * as style from './style.css';
-// import { TodoModel } from 'app/models';
-// import { TodoActions } from 'app/actions';
-// import { TodoTextInput } from '../TodoTextInput';
+import { IncidentActions } from 'app/actions';
 
 export namespace Search {
+  export interface Props  {
+    onSearch: typeof IncidentActions.fetchIncidents;
+  }
   export interface State {
     isLoading: boolean;
     value: string;
   }
 }
 
-export class Search extends React.Component<{}, Search.State> {
-  constructor(props: {}, context?: any) {
+export class Search extends React.Component<Search.Props, Search.State> {
+  constructor(props: Search.Props, context?: any) {
     super(props, context);
 
     this.state = {
@@ -29,6 +27,7 @@ export class Search extends React.Component<{}, Search.State> {
     const target = event.target as HTMLInputElement;
     const { value } = target;
     this.setState({ value });
+    this.props.onSearch({ query: value });
   }
 
   handleSearchClear = (): void => {
