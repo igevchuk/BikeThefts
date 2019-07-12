@@ -3,6 +3,8 @@ import { IncidentModel, TodoModel } from 'app/models';
 export interface RootState {
   incidents: RootState.IncidentState;
   todos: RootState.TodoState;
+  isLoading: boolean;
+  error: any;
   router?: any;
 }
 

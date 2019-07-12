@@ -18,14 +18,6 @@ export namespace IncidentActions {
     FETCH_INCIDENT_DETAILS_ENDED = 'FETCH_INCIDENT_DETAILS_ENDED'
   }
 
-  // export enum DefaultParameters {
-  //   page = '1',
-  //   per_page = 10,
-  //   incident_type = 'theft',
-  //   proximity = 'Kiev',
-  //   proximity_square = 100
-  // }
-
   export const fetchIncidents = (queryOptions = {}) => {
     const parameters = { incident_type: 'theft', ...queryOptions };
     const stringified = queryString.stringify(parameters);
@@ -46,10 +38,6 @@ export namespace IncidentActions {
     error
   });
 
-  // export const fetchIncidents = createActionThunk(
-  //   Type.FETCH_INCIDENTS_STARTED,
-  //   () => fetchUrl('https://bikewise.org/api/v2/incidents')
-  // );
   export const fetchIncidentDetails = createActionThunk<PartialPick<IncidentModel, 'id'>>(
     Type.FETCH_INCIDENT_DETAILS_STARTED,
     (id) => fetchUrl(`https://bikewise.org/api/v2/incidents/${id}`)
