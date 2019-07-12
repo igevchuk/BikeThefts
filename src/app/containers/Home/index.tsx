@@ -8,6 +8,7 @@ import { RootState } from 'app/reducers';
 import { IncidentModel } from 'app/models';
 import { omit } from 'app/utils';
 // import { Header, TodoList, Footer } from 'app/components';
+import { Search } from 'app/components/Search';
 import { IncidentList } from 'app/components';
 
 export namespace Home {
@@ -42,7 +43,7 @@ export class Home extends React.Component<Home.Props> {
 
     return (
       <div className='home'>
-        Home
+        <Search />
         <IncidentList incidents={filteredIncidents} />
       </div>
     );
