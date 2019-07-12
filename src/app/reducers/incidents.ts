@@ -28,10 +28,10 @@ export const incidentReducer = handleActions<RootState, any>(
       if(!action || !action.payload || !action.payload.incidents) {
         return state;
       }
-
       const { incidents } = action.payload;
       return {
         ...state,
+        error: null,
         incidents
       };
     },

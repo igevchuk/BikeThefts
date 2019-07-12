@@ -6,14 +6,16 @@ import { IncidentModel } from 'app/models/IncidentModel';
 
 export namespace IncidentList {
   export interface Props {
-    incidents: IncidentModel[];
+    // incidents: IncidentModel[];
     // actions: IncidentActions;
+    incidents: { incidents: IncidentModel[] }
   }
 }
 
 export class IncidentList extends React.Component<IncidentList.Props> {
   render() {
-    const { incidents } = this.props;
+    const { incidents: { incidents } } = this.props;
+    console.log(this.props)
 
     return (
       <section className='incident-list'>
