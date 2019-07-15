@@ -7,20 +7,24 @@ import { IncidentActions } from 'app/actions';
 import { RootState } from 'app/reducers';
 import { IncidentModel } from 'app/models';
 import { omit } from 'app/utils';
-// import { Header, TodoList, Footer } from 'app/components';
 import { Search } from 'app/components/Search';
 import { IncidentList } from 'app/components';
 
 export namespace Home {
   export interface Props extends RouteComponentProps<void> {
-    incidents: RootState.IncidentState;
+    incidents: IncidentModel[];
+    isLoading: boolean;
+    error?: any,
+    // incidentState: RootState,
     actions: IncidentActions;
   }
 }
 
 @connect(
-  (state: RootState, ownProps): Pick<Home.Props, 'incidents'> => {
-    return { incidents: state.incidents };
+  (state: any, ownProps) => {
+    const { incidentState } = state;
+    const { incidents, isLoading, error } = incidentState;
+    return { incidents, isLoading, error };
   },
   (dispatch: Dispatch): Pick<Home.Props, 'actions'> => ({
     actions: bindActionCreators(omit(IncidentActions, 'Type'), dispatch)
@@ -39,12 +43,10 @@ export class Home extends React.Component<Home.Props> {
   render() {
     const { incidents, actions } = this.props;
 
-    const filteredIncidents = incidents;
-
     return (
       <div className='home'>
         <Search onSearch={actions.fetchIncidents} />
-        <IncidentList incidents={filteredIncidents} />
+        <IncidentList incidents={incidents} />
       </div>
     );
   }

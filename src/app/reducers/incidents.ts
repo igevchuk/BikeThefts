@@ -4,7 +4,6 @@ import { IncidentActions } from 'app/actions/incidents';
 import { IncidentModel } from 'app/models';
 
 const initialState: RootState = {
-  todos: [],
   incidents: [],
   isLoading: false,
   error: null

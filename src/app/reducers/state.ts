@@ -1,14 +1,9 @@
-import { IncidentModel, TodoModel } from 'app/models';
+import { IncidentModel } from 'app/models';
 
 export interface RootState {
-  incidents: RootState.IncidentState;
-  todos: RootState.TodoState;
+  incidents: IncidentModel[];
   isLoading?: boolean;
   error?: any;
   router?: any;
 }
 
-export namespace RootState {
-  export type IncidentState = IncidentModel[];
-  export type TodoState = TodoModel[];
-}

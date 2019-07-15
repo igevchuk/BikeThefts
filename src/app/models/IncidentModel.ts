@@ -1,19 +1,5 @@
 /** Model definitions **/
 
-export interface TodoModel {
-  id: number;
-  text: string;
-  completed: boolean;
-}
-
-export namespace TodoModel {
-  export enum Filter {
-    SHOW_ALL = 'all',
-    SHOW_ACTIVE = 'active',
-    SHOW_COMPLETED = 'completed'
-  }
-}
-
 export interface IncidentModel {
   address: string;
   description: string;
@@ -21,7 +7,10 @@ export interface IncidentModel {
   frame_colors: string[],
   location_description: string;
   location_type: string;
-  media: MediaModel;
+  media: {
+    image_url: string;
+    image_url_thumb: string;
+  };
   occurred_at: Date;
   serial: string,
   source: string;
@@ -30,15 +19,7 @@ export interface IncidentModel {
   type_properties: string;
   updated_at: Date;
   url: string;
-}
+};
 
-export interface MediaModel {
-  image_url: string;
-  image_url_thumb: string
-}
 
-export interface AppState {
-  incidents: IncidentModel[],
-  isLoading: boolean
-}
 

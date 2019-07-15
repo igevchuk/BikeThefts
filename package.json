@@ -9,7 +9,7 @@
     "redux",
     "typescript",
     "boilerplate",
-    "todomvc"
+    "training project"
   ],
   "main": "index.js",
   "scripts": {
