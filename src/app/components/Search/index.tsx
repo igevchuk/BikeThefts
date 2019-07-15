@@ -1,51 +1,44 @@
 import * as React from 'react';
-import * as _ from 'lodash';
-import { Search as SemanticSearch } from 'semantic-ui-react';
-import { IncidentActions } from 'app/actions';
+import cx from 'classnames';
+import { Label, Input } from 'semantic-ui-react';
 
-export namespace Search {
-  export interface Props  {
-    onSearch: typeof IncidentActions.fetchIncidents;
+namespace Search {
+  export interface Props {
+    label?: string;
+    name: string;
+    placeholder?: string;
+    onChange(name: string, value: string): void;
   }
   export interface State {
-    isLoading: boolean;
-    value: string;
+    value: string
   }
 }
 
 export class Search extends React.Component<Search.Props, Search.State> {
-  constructor(props: Search.Props, context?: any) {
-    super(props, context);
-
+  constructor(props: Search.Props) {
+    super(props);
     this.state = {
-      isLoading: false,
       value: ''
     };
   }
 
-  handleSearchChange = (event: React.SyntheticEvent): void => {
-    const target = event.target as HTMLInputElement;
-    const { value } = target;
-    this.setState({ value });
-    this.props.onSearch({ query: value });
-  }
+  handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const { name, onChange } = this.props;
+    const { target: { value }} = e;
 
-  handleSearchClear = (): void => {
-    this.setState({ value: ''});
+    this.setState({ value });
+    onChange(name, value);
   }
 
   render() {
-    const { isLoading, value } = this.state;
+    const { label, placeholder } = this.props;
+    const { value } = this.state;
 
     return (
-      <SemanticSearch
-        fluid={true}
-        loading={isLoading}
-        onSearchChange={this.handleSearchChange}
-        showNoResults={false}
-        value={value}
-        {...this.props}
-      />
+      <div className={cx('search-input', )}>
+        {!!label && <Label>{ label }</Label>}
+        <Input placeholder={placeholder || ''} value={value} onChange={this.handleChange} />
+      </div>
     )
   }
 }
