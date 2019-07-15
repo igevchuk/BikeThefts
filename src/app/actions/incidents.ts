@@ -38,19 +38,22 @@ export namespace IncidentActions {
     error
   });
 
-  export const fetchIncidentDetails = createActionThunk<PartialPick<IncidentModel, 'id'>>(
-    Type.FETCH_INCIDENT_DETAILS_STARTED,
-    (id) => fetchUrl(`https://bikewise.org/api/v2/incidents/${id}`)
-  );
+  export const fetchIncidentDetails = (id: number) => {
+    return (dispatch: Dispatch) => fetchUrl(`https://bikewise.org/api/v2/incidents/${id}`)
+      .then(payload => payload.json())
+        .then((json) => dispatch(fetchIncidentDetailsSucceded(json.incident)),
+      error => dispatch(fetchIncidentDetailsFailed(error)));
+  }
 
-  // export const fetchIncidents = () => (
-  //   (dispatch: any) => (
-  //      fetchUrl('https://bikewise.org/api/v2/incidents').then(
-  //       payload => dispatch(fetchIncidentsSuccess(payload)),
-  //       error => dispatch(fetchIncidentDetailsFailed(error))
-  //     )
-  //   )
-  // )
+  export const fetchIncidentDetailsSucceded = (payload: IncidentModel) => ({
+    type: Type.FETCH_INCIDENT_DETAILS_SUCCESSED,
+    payload
+  });
+
+  export const fetchIncidentDetailsFailed = (error: any) => ({
+    type: Type.FETCH_INCIDENT_DETAILS_FAILED,
+    error
+  });
 }
 
 export type IncidentActions = Omit<typeof IncidentActions, 'Type'>;

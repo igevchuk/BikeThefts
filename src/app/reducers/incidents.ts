@@ -5,6 +5,7 @@ import { IncidentModel } from 'app/models';
 
 const initialState: RootState = {
   incidents: [],
+  details: {} as IncidentModel,
   isLoading: false,
   error: null
 };
@@ -40,6 +41,31 @@ export const incidentReducer = handleActions<RootState, any>(
         isLoading: true
       };
     },
+    [IncidentActions.Type.FETCH_INCIDENT_DETAILS_STARTED]: (state) => {
+      return {
+        ...state,
+        isLoading: true
+      }
+    },
+    [IncidentActions.Type.FETCH_INCIDENT_DETAILS_SUCCESSED]: (state, action) => {
+      return {
+        ...state,
+        details: action.payload,
+        error: null
+      }
+    },
+    [IncidentActions.Type.FETCH_INCIDENT_DETAILS_FAILED]: (state, action) => {
+      return {
+        ...state,
+        error: action.payload
+      }
+    },
+    [IncidentActions.Type.FETCH_INCIDENT_DETAILS_ENDED]: (state) => {
+      return {
+        ...state,
+        isLoading: false
+      }
+    }
   },
   initialState
 );

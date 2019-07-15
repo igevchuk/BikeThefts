@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, Switch } from 'react-router';
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { Home } from 'app/containers/Home';
-import IncidentDetails from 'app/containers/IncidentDetails';
+import { IncidentDetails } from 'app/containers/IncidentDetails';
 import { hot } from 'react-hot-loader';
 
 const GlobalStyle = createGlobalStyle`
@@ -24,8 +24,8 @@ export const App = hot(module)(() => (
     <React.Fragment>
       <GlobalStyle />
       <Switch>
-        <Route path="/" component={Home} />
-        <Route path="incident/:id" component={IncidentDetails} />
+        <Route path="/" exact={true} component={Home} />
+        <Route path="/:id" component={IncidentDetails} />
       </Switch>
     </React.Fragment>
   </ThemeProvider>
