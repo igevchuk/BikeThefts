@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as style from './style.css';
 import { IncidentListItem } from 'app/components/IncidentListItem';
 import { IncidentModel } from 'app/models/IncidentModel';
 

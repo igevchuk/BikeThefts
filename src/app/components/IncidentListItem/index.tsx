@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { IncidentModel } from 'app/models';
+import { Icon } from 'semantic-ui-react';
 import {
   IncidentContainer,
   IncidentImage,
@@ -38,21 +39,19 @@ export const IncidentListItem:React.SFC<IncidentListItem.Props> = ({ incident })
       />
 
       <IncidentContent className='incident-content'>
-        <IncidentTitle className='incident-title'>
-          <IncidentLink className='incident-link' href={`/incidents/${id}`}>{title}</IncidentLink>
+        <IncidentTitle as='h3' className='incident-title'>
+          <IncidentLink className='incident-link' href={`/${id}`}>{title}</IncidentLink>
         </IncidentTitle>
 
         <IncidentInfo className='incident-info'>
-          <b>Stolen:</b> {formatDate(occurred_at)}
+          <Icon name='calendar alternate outline'/> {formatDate(occurred_at)}
         </IncidentInfo>
 
         <IncidentInfo className='incident-info'>
-          <b>Reported:</b> {formatDate(updated_at)}
+          <Icon name='map marker alternate'/> {address}
         </IncidentInfo>
 
-        <IncidentInfo className='incident-info'>
-          <b>Location:</b> {address}
-        </IncidentInfo>
+        <IncidentLink href={`/${id}`}>Details</IncidentLink>
       </IncidentContent>
     </IncidentContainer>
   );

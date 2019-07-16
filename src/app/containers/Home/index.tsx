@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as style from './style.css';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { RouteComponentProps } from 'react-router';
@@ -7,6 +6,7 @@ import { IncidentActions } from 'app/actions';
 import { RootState } from 'app/reducers';
 import { IncidentModel } from 'app/models';
 import { omit } from 'app/utils';
+import { HomeContainer, Filters, ClearButton } from './styled';
 import { Calendar } from 'app/components/Calendar';
 import { Search } from 'app/components/Search';
 import { IncidentList } from 'app/components';
@@ -95,17 +95,20 @@ export class Home extends React.Component<Home.Props, Home.State> {
     const { occured_after, occured_before, query, proximity } = this.state;
 
     return (
-      <div className='home'>
-        <Search label='Description' name='query' onChange={this.handleUpdateFilter} />
-        <Search label='Location' name='proximity' onChange={this.handleUpdateFilter} />
-        <div>
-          Occured after: <Calendar name='occured_after' selected={occured_before} onSelect={this.handleUpdateFilter} />
-        </div>
-        <div>
-          Occured before: <Calendar name='occured_before' selected={occured_after} onSelect={this.handleUpdateFilter} />
-        </div>
+      <HomeContainer className='home-container'>
+        <Filters>
+          <Search name='query' placeholder='Search by description' onSearch={this.handleUpdateFilter} />
+          <Search placeholder='Search by location' name='proximity' onSearch={this.handleUpdateFilter} />
+          <div>
+            Occured after: <Calendar name='occured_after' selected={occured_before} onSelect={this.handleUpdateFilter} />
+          </div>
+          <div>
+            Occured before: <Calendar name='occured_before' selected={occured_after} onSelect={this.handleUpdateFilter} />
+          </div>
+          <div><ClearButton floated='right' onClick={this.clearFilters}>CLEAR FILTERS</ClearButton></div>
+        </Filters>
         { this.renderContent() }
-      </div>
+      </HomeContainer>
     );
   }
 }

@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
+import { Header } from 'semantic-ui-react';
 
 export const IncidentContainer = styled.div`
   background-color: #ffffff;
@@ -10,8 +11,8 @@ export const IncidentContainer = styled.div`
 `;
 
 export const IncidentImage = styled.div`
-  width: 220px;
-  height: 214px;
+  width: 126px;
+  height: 123px;
   flex-grow: 0;
   flex-shrink: 0;
   background-image: ${({
@@ -31,15 +32,18 @@ export const IncidentContent = styled.div`
   padding: 12px;
 `;
 
-export const IncidentTitle = styled.h3``;
+export const IncidentTitle = styled(Header)``;
 
 export const IncidentLink = styled.a`
   color: ${props => props.theme.primaryColor};
-  text-decoration: none;
+  text-decoration: underline;
 `;
 
 export const IncidentInfo = styled.div`
   margin-bottom: 0.5rem;
   line-height: 16px;
+  & > i {
+    color: ${props => props.theme.primaryColor};
+  }
 `;
 

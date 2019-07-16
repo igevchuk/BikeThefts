@@ -18,6 +18,7 @@ export const IncidentMapContainer = styled.div`
 
 export const IncidentInfo = styled.div`
   margin-bottom: 0.5rem;
+  line-height: 16px;
   & > i {
     color: ${props => props.theme.primaryColor};
   }

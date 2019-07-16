@@ -81,13 +81,7 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
     actions.getGeoJson({ occurred_at, title });
   }
 
-  getImage = (media: IncidentModel.media): string => {
-   if(!!media && !!media.image_url) {
-     return media.image_url;
-   }
-
-   return BikePlaceholder;
-  }
+  getImage = (media: IncidentModel.media): string => media.image_url || BikePlaceholder;
 
   render() {
     const { coordinates, details: { address, description, media, occurred_at, title }} = this.props;

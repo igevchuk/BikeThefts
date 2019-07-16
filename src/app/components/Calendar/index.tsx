@@ -1,8 +1,11 @@
 import * as React from 'react';
-import DatePicker from 'react-datepicker';
+import DayPickerInput  from 'react-day-picker/DayPickerInput';
 import * as moment from 'moment';
+import { Calendar as StyledCalendar } from './styled';
+// import 'react-day-picker/lib/style.css';
+import './style.css';
+// const style = require('react-day-picker/lib/style.css');
 
-import * as style from 'react-datepicker/dist/react-datepicker.min.css';
 
 export namespace Calendar {
   export interface Props {
@@ -30,12 +33,16 @@ export class Calendar extends React.Component<Calendar.Props, Calendar.State> {
   }
 
   render() {
-    const { selected } = this.props;
+    // const { selected } = this.props;
+    const FORMAT = 'M/D/YYYY';
     return (
-      <DatePicker
-        selected={new Date(selected)}
-        onChange={this.handleChange}
-      />
+      <StyledCalendar className='calendar'>
+        <DayPickerInput
+          // selected={new Date(selected)}
+          format={FORMAT}
+          onDayChange={this.handleChange}
+        />
+      </StyledCalendar>
     );
   }
 }

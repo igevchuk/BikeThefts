@@ -2,10 +2,12 @@ import { handleActions } from 'redux-actions';
 import { RootState } from './state';
 import { IncidentActions } from 'app/actions/incidents';
 import { IncidentModel } from 'app/models';
+import { GEO_COORDINATES } from 'app/constants';
 
 const initialState: RootState = {
   incidents: [],
   details: {} as IncidentModel,
+  coordinates: GEO_COORDINATES,
   isLoading: false,
   mapLoaded: false,
   error: null
