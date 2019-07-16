@@ -4,9 +4,19 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { RouteComponentProps } from 'react-router';
 import { IncidentActions } from 'app/actions';
 import { IncidentModel } from 'app/models';
-// import * as style from './style.css';
 import { omit } from 'app/utils';
+import { Map } from 'app/components/Map';
+import {
+  IncidentLocation,
+  IncidentContent,
+  IncidentDate,
+  IncidentDescription,
+  IncidentImage,
+  IncidentTitle,
+  IncidentMapContainer
+} from './styled';
 
+const BikePlaceholder =  require('./assets/bike-placeholder.png');
 
 export namespace IncidentDetails {
   export interface Props extends RouteComponentProps<any> {
@@ -37,7 +47,7 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props, Inci
     this.fetchData();
   }
 
-  fetchData = () => {
+  fetchData = (): void => {
     const { actions, match: { params }} = this.props;
 
     if(!params || !params.id) {
@@ -47,12 +57,29 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props, Inci
     actions.fetchIncidentDetails(params.id);
   }
 
+  getImage = (media: any): string => {
+   if(!!media && !!media.image_url) {
+     return media.image_url;
+   }
+
+   return BikePlaceholder;
+  }
+
   render() {
-    const { details } = this.props;
+    const { details: { address, description, media, occurred_at, title }} = this.props;
 
     return (
       <div className='incident-details'>
-        Incident Details
+        <IncidentImage image={this.getImage(media)} fallback={BikePlaceholder} className='incident-image'/>
+        <IncidentContent className='incident-content'>
+          <IncidentTitle className='incident-title'>{ title }</IncidentTitle>
+          <IncidentDate className='incident-date'>Reported: { occurred_at }</IncidentDate>
+          <IncidentLocation className='incident-location'>Location: { address }</IncidentLocation>
+          <IncidentDescription className='incident-description'>{ description }</IncidentDescription>
+        </IncidentContent>
+        <IncidentMapContainer className='incident-map-container'>
+          <Map className='incident-map'>Map</Map>
+        </IncidentMapContainer>
       </div>
     );
   }
