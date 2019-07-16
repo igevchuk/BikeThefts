@@ -60,11 +60,13 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
+    "@types/google-map-react": "^0.23.12",
     "@types/lodash": "^4.14.136",
     "@types/react-datepicker": "^2.3.0",
     "@types/react-router-dom": "^4.3.4",
     "@types/styled-components": "^4.1.18",
     "classnames": "^2.2.6",
+    "google-map-react": "^1.1.4",
     "lodash": "^4.17.14",
     "moment": "^2.24.0",
     "query-string": "^6.8.1",

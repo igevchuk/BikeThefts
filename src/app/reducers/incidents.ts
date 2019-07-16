@@ -7,6 +7,7 @@ const initialState: RootState = {
   incidents: [],
   details: {} as IncidentModel,
   isLoading: false,
+  mapLoaded: false,
   error: null
 };
 
@@ -64,6 +65,20 @@ export const incidentReducer = handleActions<RootState, any>(
       return {
         ...state,
         isLoading: false
+      }
+    },
+    [IncidentActions.Type.FETCH_GEO_JSON_SUCCEDED]: (state, action) => {
+      return {
+        ...state,
+        coordinates: action.payload,
+        mapLoaded: true
+      }
+    },
+    [IncidentActions.Type.FETCH_GEO_JSON_FAILED]: (state, action) => {
+      return {
+        ...state,
+        error: action.payload,
+        mapLoaded: true
       }
     }
   },

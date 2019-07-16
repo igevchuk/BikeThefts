@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as moment from 'moment';
 import { IncidentModel } from 'app/models';
 import {
   IncidentContainer,
@@ -9,6 +8,7 @@ import {
   IncidentLink,
   IncidentInfo
 } from './styled'
+import { formatDate } from 'app/utils';
 
 const BikePlaceholder =  require('./assets/bike-placeholder.png');
 
@@ -28,10 +28,6 @@ export const IncidentListItem:React.SFC<IncidentListItem.Props> = ({ incident })
     address,
     id
   } = incident;
-
-  const formatDate = (value: Date, format: string = 'LLL') => {
-    return moment(value).format(format);
-  }
 
   return (
     <IncidentContainer className='incident'>
