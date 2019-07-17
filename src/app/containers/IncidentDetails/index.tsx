@@ -21,13 +21,13 @@ import {
 import { GOOGLE_MAPS_API_KEY } from 'app/constants';
 import { formatDate } from 'app/utils';
 
-const BikePlaceholder =  require('./assets/bike-placeholder.png');
+const BikePlaceholder = require('./assets/bike-placeholder.png');
 
 export namespace IncidentDetails {
   export interface Props extends RouteComponentProps<any> {
     actions: IncidentActions;
     details: IncidentModel;
-    coordinates?: [number, number],
+    coordinates?: [number, number];
     isLoading?: boolean;
     mapLoaded: boolean;
     error?: any;
@@ -35,9 +35,8 @@ export namespace IncidentDetails {
   export type mapRequestParams = {
     occurred_at: number;
     title: string;
-  }
+  };
 }
-
 
 @connect(
   (state: any, ownProps) => {
@@ -49,7 +48,6 @@ export namespace IncidentDetails {
     actions: bindActionCreators(omit(IncidentActions, 'Type'), dispatch)
   })
 )
-
 export class IncidentDetails extends React.Component<IncidentDetails.Props> {
   componentDidMount() {
     this.fetchIncidentDetails();
@@ -57,84 +55,86 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
 
   // Load map once incident details fetched
   componentWillReceiveProps(props: IncidentDetails.Props) {
-    const { mapLoaded, details: { id, occurred_at, title } } = props;
+    const {
+      mapLoaded,
+      details: { id, occurred_at, title }
+    } = props;
 
-    if(!mapLoaded && id && occurred_at && title) {
+    if (!mapLoaded && id && occurred_at && title) {
       this.loadMap({ occurred_at, title });
     }
   }
 
   fetchIncidentDetails = (): void => {
-    const { actions, match: { params }} = this.props;
+    const {
+      actions,
+      match: { params }
+    } = this.props;
 
-    if(!params || !params.id) {
+    if (!params || !params.id) {
       return;
     }
     // // const { id } = match.params;
     actions.fetchIncidentDetails(params.id);
-  }
-
+  };
 
   loadMap = ({ occurred_at, title }: IncidentDetails.mapRequestParams): void => {
     const { actions } = this.props;
 
     actions.getGeoJson({ occurred_at, title });
-  }
+  };
 
   getImage = (media: IncidentModel.media): string => media.image_url || BikePlaceholder;
 
   render() {
-    const { coordinates, details: { address, description, media, occurred_at, title }} = this.props;
+    const {
+      coordinates,
+      details: { address, description, media, occurred_at, title }
+    } = this.props;
     let longitude, latitude;
 
-    if(coordinates) {
+    if (coordinates) {
       [longitude, latitude] = coordinates;
     }
 
     return (
-      <DetailsContainer className='incident-details'>
-        <IncidentTitle as='h2' className='incident-title'>{ title }</IncidentTitle>
+      <DetailsContainer className="incident-details">
+        <IncidentTitle as="h2" className="incident-title">
+          {title}
+        </IncidentTitle>
 
-        <DetailsBox className='incident-box'>
-          <IncidentImage image={this.getImage(media)} className='incident-image'/>
+        <DetailsBox className="incident-box">
+          <IncidentImage image={this.getImage(media)} className="incident-image" />
 
-          <IncidentContent className='incident-content'>
-            <IncidentInfo className='incident-date'>
-              <Icon name='calendar alternate outline'/> { formatDate(occurred_at) }
+          <IncidentContent className="incident-content">
+            <IncidentInfo className="incident-date">
+              <Icon name="calendar alternate outline" /> {formatDate(occurred_at)}
             </IncidentInfo>
 
-            <IncidentInfo className='incident-location'>
-              <Icon name='map marker alternate'/> { address }
+            <IncidentInfo className="incident-location">
+              <Icon name="map marker alternate" /> {address}
             </IncidentInfo>
 
             <IncidentInfo>
-              <IncidentDescription className='incident-description'>
-                { description || 'None'}
+              <IncidentDescription className="incident-description">
+                {description || 'None'}
               </IncidentDescription>
             </IncidentInfo>
-        </IncidentContent>
+          </IncidentContent>
         </DetailsBox>
 
-
-        <IncidentMapContainer className='incident-map-container'>
-          {
-            longitude && latitude && (
-              <GoogleMapReact
-                bootstrapURLKeys={{ key: GOOGLE_MAPS_API_KEY }}
-                defaultCenter={{ lat: latitude, lng: longitude }}
-                defaultZoom={11}
-              >
-                <MapMarker
-                  lat={latitude}
-                  lng={longitude}
-                  text="Place of incident"
-                />
-              </GoogleMapReact>
-            )
-          }
+        <IncidentMapContainer className="incident-map-container">
+          {longitude && latitude && (
+            <GoogleMapReact
+              bootstrapURLKeys={{ key: GOOGLE_MAPS_API_KEY }}
+              defaultCenter={{ lat: latitude, lng: longitude }}
+              defaultZoom={11}
+            >
+              <MapMarker lat={latitude} lng={longitude} text="Place of incident" />
+            </GoogleMapReact>
+          )}
         </IncidentMapContainer>
       </DetailsContainer>
     );
   }
 }
-

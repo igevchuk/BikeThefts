@@ -4,7 +4,7 @@ import { Search as SemanticSearch } from 'semantic-ui-react';
 import { IncidentActions } from 'app/actions';
 
 export namespace Search {
-  export interface Props  {
+  export interface Props {
     onSearch: typeof IncidentActions.fetchIncidents;
   }
   export interface State {
@@ -28,11 +28,11 @@ export class Search extends React.Component<Search.Props, Search.State> {
     const { value } = target;
     this.setState({ value });
     this.props.onSearch({ query: value });
-  }
+  };
 
   handleSearchClear = (): void => {
-    this.setState({ value: ''});
-  }
+    this.setState({ value: '' });
+  };
 
   render() {
     const { isLoading, value } = this.state;
@@ -46,6 +46,6 @@ export class Search extends React.Component<Search.Props, Search.State> {
         value={value}
         {...this.props}
       />
-    )
+    );
   }
 }

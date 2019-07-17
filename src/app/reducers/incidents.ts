@@ -18,7 +18,7 @@ export const incidentReducer = handleActions<RootState, any>(
     [IncidentActions.Type.FETCH_INCIDENTS_STARTED]: (state) => {
       return {
         ...state,
-        isLoading: true,
+        isLoading: true
       };
     },
     [IncidentActions.Type.FETCH_INCIDENTS_FAILED]: (state, action) => {
@@ -28,7 +28,7 @@ export const incidentReducer = handleActions<RootState, any>(
       };
     },
     [IncidentActions.Type.FETCH_INCIDENTS_SUCCESSED]: (state, action) => {
-      if(!action || !action.payload || !action.payload.incidents) {
+      if (!action || !action.payload || !action.payload.incidents) {
         return state;
       }
       const { incidents } = action.payload;
@@ -48,40 +48,40 @@ export const incidentReducer = handleActions<RootState, any>(
       return {
         ...state,
         isLoading: true
-      }
+      };
     },
     [IncidentActions.Type.FETCH_INCIDENT_DETAILS_SUCCESSED]: (state, action) => {
       return {
         ...state,
         details: action.payload,
         error: null
-      }
+      };
     },
     [IncidentActions.Type.FETCH_INCIDENT_DETAILS_FAILED]: (state, action) => {
       return {
         ...state,
         error: action.payload
-      }
+      };
     },
     [IncidentActions.Type.FETCH_INCIDENT_DETAILS_ENDED]: (state) => {
       return {
         ...state,
         isLoading: false
-      }
+      };
     },
     [IncidentActions.Type.FETCH_GEO_JSON_SUCCEDED]: (state, action) => {
       return {
         ...state,
         coordinates: action.payload,
         mapLoaded: true
-      }
+      };
     },
     [IncidentActions.Type.FETCH_GEO_JSON_FAILED]: (state, action) => {
       return {
         ...state,
         error: action.payload,
         mapLoaded: true
-      }
+      };
     }
   },
   initialState

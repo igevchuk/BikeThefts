@@ -4,7 +4,7 @@ import { IncidentModel } from 'app/models/IncidentModel';
 
 export namespace IncidentList {
   export interface Props {
-    incidents: IncidentModel[]
+    incidents: IncidentModel[];
   }
 }
 
@@ -13,9 +13,9 @@ export class IncidentList extends React.Component<IncidentList.Props> {
     const { incidents } = this.props;
 
     return (
-      <section className='incident-list'>
+      <section className="incident-list">
         <ul>
-          {incidents.map(incident => (
+          {incidents.map((incident) => (
             <IncidentListItem incident={incident} key={incident.id} />
           ))}
         </ul>

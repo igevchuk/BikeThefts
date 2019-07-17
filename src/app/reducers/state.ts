@@ -9,5 +9,3 @@ export interface RootState {
   error?: any;
   router?: any;
 }
-
-

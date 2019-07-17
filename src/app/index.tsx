@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router';
-import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { Home } from 'app/containers/Home';
 import { IncidentDetails } from 'app/containers/IncidentDetails';
 import { hot } from 'react-hot-loader';
@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 14px;
     line-height: 16px;
   }
-`
+`;
 
 export const App = hot(module)(() => (
   <ThemeProvider theme={{ primaryColor: '#3498db' }}>

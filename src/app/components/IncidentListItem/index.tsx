@@ -8,11 +8,10 @@ import {
   IncidentTitle,
   IncidentLink,
   IncidentInfo
-} from './styled'
+} from './styled';
 import { formatDate } from 'app/utils';
 
-const BikePlaceholder =  require('./assets/bike-placeholder.png');
-
+const BikePlaceholder = require('./assets/bike-placeholder.png');
 
 namespace IncidentListItem {
   export interface Props {
@@ -20,7 +19,7 @@ namespace IncidentListItem {
   }
 }
 
-export const IncidentListItem:React.SFC<IncidentListItem.Props> = ({ incident }) => {
+export const IncidentListItem: React.SFC<IncidentListItem.Props> = ({ incident }) => {
   const {
     title,
     media: { image_url_thumb },
@@ -31,28 +30,30 @@ export const IncidentListItem:React.SFC<IncidentListItem.Props> = ({ incident })
   } = incident;
 
   return (
-    <IncidentContainer className='incident'>
+    <IncidentContainer className="incident">
       <IncidentImage
-        className='incident-image'
+        className="incident-image"
         image={image_url_thumb || BikePlaceholder}
         fallback={BikePlaceholder}
       />
 
-      <IncidentContent className='incident-content'>
-        <IncidentTitle as='h3' className='incident-title'>
-          <IncidentLink className='incident-link' href={`/${id}`}>{title}</IncidentLink>
+      <IncidentContent className="incident-content">
+        <IncidentTitle as="h3" className="incident-title">
+          <IncidentLink className="incident-link" href={`/${id}`}>
+            {title}
+          </IncidentLink>
         </IncidentTitle>
 
-        <IncidentInfo className='incident-info'>
-          <Icon name='calendar alternate outline'/> {formatDate(occurred_at)}
+        <IncidentInfo className="incident-info">
+          <Icon name="calendar alternate outline" /> {formatDate(occurred_at)}
         </IncidentInfo>
 
-        <IncidentInfo className='incident-info'>
-          <Icon name='map marker alternate'/> {address}
+        <IncidentInfo className="incident-info">
+          <Icon name="map marker alternate" /> {address}
         </IncidentInfo>
 
         <IncidentLink href={`/${id}`}>Details</IncidentLink>
       </IncidentContent>
     </IncidentContainer>
   );
-}
+};
