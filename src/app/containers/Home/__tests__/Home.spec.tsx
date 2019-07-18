@@ -24,61 +24,34 @@ function setUp(props = {}) {
 //   });
 // });
 
-describe('<Home />', function() {
-  const component = (
-    <Provider store={store}>
-      <Home />
-    </Provider>
-  );
-  // it('should render without throwing an error', function() {
-  //   expect(shallow(<Home />).contains(<h1>List of stolen bikes</h1>)).toBe(true);
-  // });
+const component = (
+  <Provider store={store}>
+    <Home />
+  </Provider>
+);
 
-  // it('should be selectable by class "home-container"', function() {
-  //   expect(shallow(<Home />).is('.home-container')).toBe(true);
-  // });
+describe('<Home />', () => {
+  it('should be selectable by class "home-container"', () => {
+    expect(shallow(component).hasClass('home-container'));
+  });
 
-  // it('should mount in a full DOM', function() {
-  //   expect(mount(<Home />).find('.home-container').length).toBe(1);
-  // });
-
-  it('should render without throwing an error', () => {
+  it('should render heading', () => {
     expect(shallow(component).exists(<h1>List of stolen bikes</h1>));
   });
 
-  it('should mount in a full DOM', function() {
+  it('should render search text field', () => {
     expect(shallow(component).exists('.search-input'));
   });
 
-  it('should mount in a full DOM', function() {
+  it('should render date picker', () => {
     expect(shallow(component).exists('.calendar'));
   });
 
-  it('should mount in a full DOM', function() {
+  it('should render Clear filters button', () => {
     expect(shallow(component).exists(<button>CLEAR FILTERS</button>));
   });
 
-  it('should mount in a full DOM', function() {
-    expect(shallow(component).exists('.search-input'));
-  });
-
-  it('should mount in a full DOM', function() {
+  it('should render incidents list', () => {
     expect(shallow(component).exists('.incidents-list'));
   });
-
-  // // it('should render to static HTML', function () {
-  // //   expect(render(<Home />).text()).toEqual('Bar');
-  // // });
-
-  // it('should render to static HTML', function() {
-  //   expect(
-  //     mount(
-  //       <Provider store={store}>
-  //         <Home />
-  //       </Provider>
-  //     )
-  //       .find('h1')
-  //       .text()
-  //   ).toEqual('List of stolen bikes');
-  // });
 });

@@ -5,6 +5,7 @@ import { IncidentActions } from 'app/actions';
 import { RootState } from 'app/reducers';
 import { IncidentModel } from 'app/models';
 import { omit } from 'app/utils';
+import { Message } from 'semantic-ui-react';
 import { HomeContainer, Filters, ClearButton } from './styled';
 import { Calendar } from 'app/components/Calendar';
 import { Search } from 'app/components/Search';
@@ -85,32 +86,40 @@ export class Home extends React.Component<Home.Props, Home.State> {
     const { incidents } = this.props;
 
     if (incidents.length === 0) {
-      return 'No matches found';
+      return (
+        <Message>
+          <Message.Header>No results found.</Message.Header>
+          <p>Try to change your search criteria.</p>
+        </Message>
+      );
     }
 
     return <IncidentList incidents={incidents} />;
   };
 
   render() {
-    const { occured_after, occured_before, query, proximity } = this.state;
+    const { occured_after, occured_before } = this.state;
 
     return (
       <HomeContainer className="home-container">
         <h1>List of stolen bikes</h1>
         <Filters>
           <Search
+            id="query"
             name="query"
             placeholder="Search by description"
-            onSearch={this.handleUpdateFilter}
+            handleSearch={this.handleUpdateFilter}
           />
           <Search
+            id="proximity"
             placeholder="Search by location"
             name="proximity"
-            onSearch={this.handleUpdateFilter}
+            handleSearch={this.handleUpdateFilter}
           />
           <div>
             Occured after:{' '}
             <Calendar
+              id="occured_after"
               name="occured_after"
               selected={occured_before}
               onSelect={this.handleUpdateFilter}
@@ -119,13 +128,14 @@ export class Home extends React.Component<Home.Props, Home.State> {
           <div>
             Occured before:{' '}
             <Calendar
+              id="occured_before"
               name="occured_before"
               selected={occured_after}
               onSelect={this.handleUpdateFilter}
             />
           </div>
           <div>
-            <ClearButton floated="right" onClick={this.clearFilters}>
+            <ClearButton id="clear-button" floated="right" onClick={this.clearFilters}>
               CLEAR FILTERS
             </ClearButton>
           </div>

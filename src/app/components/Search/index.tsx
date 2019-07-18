@@ -5,12 +5,13 @@ import { Input } from 'semantic-ui-react';
 
 namespace Search {
   export interface Props {
+    id?: string;
     name: string;
     placeholder?: string;
-    onSearch(name: string, value: string): void;
+    handleSearch(name: string, value: string): void;
   }
   export interface State {
-    value: string
+    value: string;
   }
 }
 
@@ -23,21 +24,29 @@ export class Search extends React.Component<Search.Props, Search.State> {
   }
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const { name, onSearch } = this.props;
-    const { target: { value }} = e;
+    const { name, handleSearch } = this.props;
+    const {
+      target: { value }
+    } = e;
 
     this.setState({ value });
-    onSearch(name, value);
-  }
+    handleSearch(name, value);
+  };
 
   render() {
     const { placeholder, ...rest } = this.props;
     const { value } = this.state;
 
     return (
-      <StyledSearch className={cx('search-input', )}>
-        <Input fluid={true} placeholder={placeholder || ''} value={value} onChange={this.handleChange} {...rest} />
+      <StyledSearch className={cx('search-input')}>
+        <Input
+          fluid={true}
+          placeholder={placeholder || ''}
+          value={value}
+          onChange={this.handleChange}
+          {...rest}
+        />
       </StyledSearch>
-    )
+    );
   }
 }
