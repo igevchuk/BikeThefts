@@ -98,7 +98,7 @@ export class Home extends React.Component<Home.Props, Home.State> {
   };
 
   render() {
-    const { occured_after, occured_before } = this.state;
+    const { occured_after, occured_before, query, proximity } = this.state;
 
     return (
       <HomeContainer className="home-container">
@@ -108,12 +108,14 @@ export class Home extends React.Component<Home.Props, Home.State> {
             id="query"
             name="query"
             placeholder="Search by description"
+            value={query}
             handleSearch={this.handleUpdateFilter}
           />
           <Search
             id="proximity"
             placeholder="Search by location"
             name="proximity"
+            value={proximity}
             handleSearch={this.handleUpdateFilter}
           />
           <div>

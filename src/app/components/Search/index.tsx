@@ -8,6 +8,7 @@ namespace Search {
     id?: string;
     name: string;
     placeholder?: string;
+    value: string;
     handleSearch(name: string, value: string): void;
   }
   export interface State {
@@ -15,27 +16,18 @@ namespace Search {
   }
 }
 
-export class Search extends React.Component<Search.Props, Search.State> {
-  constructor(props: Search.Props) {
-    super(props);
-    this.state = {
-      value: ''
-    };
-  }
-
+export class Search extends React.Component<Search.Props> {
   handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, handleSearch } = this.props;
     const {
       target: { value }
     } = e;
 
-    this.setState({ value });
     handleSearch(name, value);
   };
 
   render() {
-    const { placeholder, ...rest } = this.props;
-    const { value } = this.state;
+    const { placeholder, value, ...rest } = this.props;
 
     return (
       <StyledSearch className={cx('search-input')}>
