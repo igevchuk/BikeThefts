@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { RouteComponentProps } from 'react-router';
 import GoogleMapReact from 'google-map-react';
@@ -22,6 +21,7 @@ import { GOOGLE_MAPS_API_KEY } from 'app/constants';
 import { formatDate } from 'app/utils';
 
 const BikePlaceholder = require('./assets/bike-placeholder.png');
+const { connect } = require('react-redux');
 
 export namespace IncidentDetails {
   export interface Props extends RouteComponentProps<any> {
@@ -84,7 +84,12 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
     actions.getGeoJson({ occurred_at, title });
   };
 
-  getImage = (media: IncidentModel.media): string => media.image_url || BikePlaceholder;
+  getImage = (media: IncidentModel.media): string => {
+    if (!media) {
+      return BikePlaceholder;
+    }
+    return media.image_url || BikePlaceholder;
+  };
 
   render() {
     const {

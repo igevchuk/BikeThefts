@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { RouteComponentProps } from 'react-router';
 import { IncidentActions } from 'app/actions';
@@ -11,6 +10,7 @@ import { Calendar } from 'app/components/Calendar';
 import { Search } from 'app/components/Search';
 import { IncidentList } from 'app/components';
 import * as moment from 'moment';
+const { connect } = require('react-redux');
 
 export namespace Home {
   export interface Props extends RouteComponentProps<void> {
@@ -92,12 +92,11 @@ export class Home extends React.Component<Home.Props, Home.State> {
   };
 
   render() {
-    const { actions } = this.props;
     const { occured_after, occured_before, query, proximity } = this.state;
 
     return (
       <HomeContainer className="home-container">
-        <h1>Home</h1>
+        <h1>List of stolen bikes</h1>
         <Filters>
           <Search
             name="query"
