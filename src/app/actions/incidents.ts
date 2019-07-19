@@ -1,10 +1,16 @@
-import { createAction } from 'redux-actions';
-import { createActionThunk } from 'redux-thunk-actions';
 import * as queryString from 'query-string';
 import { IncidentModel } from 'app/models';
 import { Dispatch } from 'redux';
+import { API_URL, GEO_API_URL, INCIDENT_TYPE } from 'app/constants';
 
-const fetchUrl = (url: string) => fetch(url);
+const fetchUrl = <T>(url: string): Promise<T> =>
+  fetch(url).then((response) => {
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return response.json();
+  });
 
 export namespace IncidentActions {
   export enum Type {
@@ -27,36 +33,37 @@ export namespace IncidentActions {
   }
 
   export const fetchIncidents = (queryOptions = {}) => {
-    const parameters = { incident_type: 'theft', ...queryOptions };
+    const parameters = { incident_type: INCIDENT_TYPE, ...queryOptions };
     const stringified = queryString.stringify(parameters);
+    type Payload = {
+      incidents: IncidentModel[];
+    };
 
     return (dispatch: Dispatch) =>
-      fetchUrl(`https://bikewise.org/api/v2/incidents?${stringified}`)
-        .then((payload) => payload.json())
-        .then(
-          (json) => dispatch(fetchIncidentsSucceded(json)),
-          (error) => dispatch(fetchIncidentsFailed(error))
-        );
+      fetchUrl(`${API_URL}?${stringified}`)
+        .then((payload: Payload) => dispatch(fetchIncidentsSucceded(payload.incidents)))
+        .catch((error: string) => dispatch(fetchIncidentsFailed(error)));
   };
 
-  export const fetchIncidentsSucceded = (payload: any) => ({
+  export const fetchIncidentsSucceded = (payload: IncidentModel[]) => ({
     type: Type.FETCH_INCIDENTS_SUCCESSED,
     payload
   });
 
-  export const fetchIncidentsFailed = (error: any) => ({
+  export const fetchIncidentsFailed = (error: string) => ({
     type: Type.FETCH_INCIDENTS_FAILED,
     error
   });
 
   export const fetchIncidentDetails = (id: number) => {
+    type Payload = {
+      incident: IncidentModel;
+    };
+
     return (dispatch: Dispatch) =>
-      fetchUrl(`https://bikewise.org/api/v2/incidents/${id}`)
-        .then((payload) => payload.json())
-        .then(
-          (json) => dispatch(fetchIncidentDetailsSucceded(json.incident)),
-          (error) => dispatch(fetchIncidentDetailsFailed(error))
-        );
+      fetchUrl(`${API_URL}/${id}`)
+        .then((payload: Payload) => dispatch(fetchIncidentDetailsSucceded(payload.incident)))
+        .catch((error: string) => dispatch(fetchIncidentDetailsFailed(error)));
   };
 
   export const fetchIncidentDetailsSucceded = (payload: IncidentModel) => ({
@@ -64,7 +71,7 @@ export namespace IncidentActions {
     payload
   });
 
-  export const fetchIncidentDetailsFailed = (error: any) => ({
+  export const fetchIncidentDetailsFailed = (error: string) => ({
     type: Type.FETCH_INCIDENT_DETAILS_FAILED,
     error
   });
@@ -73,18 +80,23 @@ export namespace IncidentActions {
     const params = queryString.stringify({
       occurred_before: occurred_at + 1, // api sometimes return nothing with exact timestamps
       occurred_after: occurred_at - 1,
-      incident_type: 'theft',
+      incident_type: INCIDENT_TYPE,
       query: title
     });
 
+    type Payload = {
+      features: {
+        geometry: {
+          coordinates: [number, number];
+        };
+      }[];
+    };
+
     return (dispatch: Dispatch) =>
-      fetchUrl(`https://bikewise.org/api/v2/locations?${params}`)
-        .then((payload) => payload.json())
-        .then((json) => json.features[0].geometry.coordinates)
-        .then(
-          (payload) => dispatch(fetchGeoJsonSucceded(payload)),
-          (error) => dispatch(fetchGeoJsonFailed(error))
-        );
+      fetchUrl(`${GEO_API_URL}?${params}`)
+        .then((payload: Payload) => payload.features[0].geometry.coordinates)
+        .then((coordinates: [number, number]) => dispatch(fetchGeoJsonSucceded(coordinates)))
+        .catch((error: string) => dispatch(fetchGeoJsonFailed(error)));
   };
 
   export const fetchGeoJsonSucceded = (payload: [number, number]) => ({
@@ -92,7 +104,7 @@ export namespace IncidentActions {
     payload
   });
 
-  export const fetchGeoJsonFailed = (error: any) => ({
+  export const fetchGeoJsonFailed = (error: string) => ({
     type: Type.FETCH_GEO_JSON_FAILED,
     error
   });

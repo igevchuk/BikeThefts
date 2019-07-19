@@ -28,20 +28,16 @@ export const incidentReducer = handleActions<RootState, any>(
       };
     },
     [IncidentActions.Type.FETCH_INCIDENTS_SUCCESSED]: (state, action) => {
-      if (!action || !action.payload || !action.payload.incidents) {
-        return state;
-      }
-      const { incidents } = action.payload;
       return {
         ...state,
         error: null,
-        incidents
+        incidents: [...action.payload]
       };
     },
     [IncidentActions.Type.FETCH_INCIDENTS_ENDED]: (state) => {
       return {
         ...state,
-        isLoading: true
+        isLoading: false
       };
     },
     [IncidentActions.Type.FETCH_INCIDENT_DETAILS_STARTED]: (state) => {
@@ -53,8 +49,7 @@ export const incidentReducer = handleActions<RootState, any>(
     [IncidentActions.Type.FETCH_INCIDENT_DETAILS_SUCCESSED]: (state, action) => {
       return {
         ...state,
-        details: action.payload,
-        error: null
+        details: { ...action.payload }
       };
     },
     [IncidentActions.Type.FETCH_INCIDENT_DETAILS_FAILED]: (state, action) => {

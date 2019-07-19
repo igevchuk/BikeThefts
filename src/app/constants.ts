@@ -4,3 +4,5 @@ export const GOOGLE_MAPS_API_KEY: string = 'AIzaSyA79utSSgM1hUNfVSWiH1jD-t-Uppr6
 export const INCIDENT_TYPE: string = 'theft';
 export const GEO_COORDINATES: [number, number] = [50.401699, 30.2525078];
 export const DATE_FORMAT: string = 'M/D/YYYY';
+export const API_URL: string = 'https://bikewise.org/api/v2/incidents';
+export const GEO_API_URL: string = 'https://bikewise.org/api/v2/incidents';

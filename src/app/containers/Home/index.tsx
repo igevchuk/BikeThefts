@@ -83,11 +83,12 @@ export class Home extends React.Component<Home.Props, Home.State> {
   };
 
   renderContent = (): React.ReactNode => {
+    console.log(1546, this.props);
     const { incidents } = this.props;
 
     if (incidents.length === 0) {
       return (
-        <Message>
+        <Message data-test="message-component">
           <Message.Header>No results found.</Message.Header>
           <p>Try to change your search criteria.</p>
         </Message>
