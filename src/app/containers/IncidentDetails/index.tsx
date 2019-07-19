@@ -103,37 +103,42 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
     }
 
     return (
-      <DetailsContainer className="incident-details">
-        <IncidentTitle as="h2" className="incident-title">
+      <DetailsContainer className="incident-details" data-test="incident-component">
+        <IncidentTitle as="h2" className="incident-title" data-test="incident-title">
           {title}
         </IncidentTitle>
 
         <DetailsBox className="incident-box">
-          <IncidentImage image={this.getImage(media)} className="incident-image" />
+          <IncidentImage
+            image={this.getImage(media)}
+            className="incident-image"
+            data-test="incident-image"
+          />
 
           <IncidentContent className="incident-content">
-            <IncidentInfo className="incident-date">
+            <IncidentInfo className="incident-date" data-test="incident-date">
               <Icon name="calendar alternate outline" /> {formatDate(occurred_at)}
             </IncidentInfo>
 
-            <IncidentInfo className="incident-location">
+            <IncidentInfo className="incident-location" data-test="incident-address">
               <Icon name="map marker alternate" /> {address}
             </IncidentInfo>
 
             <IncidentInfo>
-              <IncidentDescription className="incident-description">
+              <IncidentDescription className="incident-description" data-test="incident-location">
                 {description || 'None'}
               </IncidentDescription>
             </IncidentInfo>
           </IncidentContent>
         </DetailsBox>
 
-        <IncidentMapContainer className="incident-map-container">
+        <IncidentMapContainer className="incident-map-container" data-test="incident-map-container">
           {longitude && latitude && (
             <GoogleMapReact
               bootstrapURLKeys={{ key: GOOGLE_MAPS_API_KEY }}
               defaultCenter={{ lat: latitude, lng: longitude }}
               defaultZoom={11}
+              data-test="incident-map"
             >
               <MapMarker lat={latitude} lng={longitude} text="Place of incident" />
             </GoogleMapReact>
