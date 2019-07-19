@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IncidentListItem } from 'app/components/IncidentListItem';
-import { IncidentModel } from 'app/models/IncidentModel';
+import { IncidentModel } from 'app/models';
 
 export namespace IncidentList {
   export interface Props {
@@ -8,18 +8,16 @@ export namespace IncidentList {
   }
 }
 
-export class IncidentList extends React.Component<IncidentList.Props> {
-  render() {
-    const { incidents } = this.props;
+export const IncidentList: React.SFC<IncidentList.Props> = (props) => {
+  const { incidents } = props;
 
-    return (
-      <section className="incident-list">
-        <ul>
-          {incidents.map((incident) => (
-            <IncidentListItem incident={incident} key={incident.id} />
-          ))}
-        </ul>
-      </section>
-    );
-  }
-}
+  return (
+    <section className="incident-list" data-test="incident-list-component">
+      <ul>
+        {incidents.map((incident) => (
+          <IncidentListItem incident={incident} key={incident.id} />
+        ))}
+      </ul>
+    </section>
+  );
+};

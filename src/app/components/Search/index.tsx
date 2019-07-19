@@ -1,24 +1,20 @@
 import * as React from 'react';
-import cx from 'classnames';
 import { Search as StyledSearch } from './styled';
 import { Input } from 'semantic-ui-react';
 
 namespace Search {
   export interface Props {
-    id?: string;
     name: string;
     placeholder?: string;
     value: string;
     handleSearch(name: string, value: string): void;
   }
-  export interface State {
-    value: string;
-  }
 }
 
-export class Search extends React.Component<Search.Props> {
-  handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const { name, handleSearch } = this.props;
+export const Search: React.SFC<Search.Props> = (props) => {
+  const { name, placeholder, value, handleSearch, ...rest } = props;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const {
       target: { value }
     } = e;
@@ -26,19 +22,17 @@ export class Search extends React.Component<Search.Props> {
     handleSearch(name, value);
   };
 
-  render() {
-    const { placeholder, value, ...rest } = this.props;
-
-    return (
-      <StyledSearch className={cx('search-input')}>
-        <Input
-          fluid={true}
-          placeholder={placeholder || ''}
-          value={value}
-          onChange={this.handleChange}
-          {...rest}
-        />
-      </StyledSearch>
-    );
-  }
-}
+  return (
+    <StyledSearch className="search" data-test="search-component">
+      <Input
+        className="search-input"
+        fluid={true}
+        placeholder={placeholder || ''}
+        value={value}
+        onChange={handleChange}
+        {...rest}
+        data-test="search-input-component"
+      />
+    </StyledSearch>
+  );
+};

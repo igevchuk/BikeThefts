@@ -105,14 +105,12 @@ export class Home extends React.Component<Home.Props, Home.State> {
         <h1>List of stolen bikes</h1>
         <Filters>
           <Search
-            id="query"
             name="query"
             placeholder="Search by description"
             value={query}
             handleSearch={this.handleUpdateFilter}
           />
           <Search
-            id="proximity"
             placeholder="Search by location"
             name="proximity"
             value={proximity}
@@ -121,7 +119,6 @@ export class Home extends React.Component<Home.Props, Home.State> {
           <div>
             Occured after:{' '}
             <Calendar
-              id="occured_after"
               name="occured_after"
               selected={occured_before}
               onSelect={this.handleUpdateFilter}
@@ -130,14 +127,17 @@ export class Home extends React.Component<Home.Props, Home.State> {
           <div>
             Occured before:{' '}
             <Calendar
-              id="occured_before"
               name="occured_before"
               selected={occured_after}
               onSelect={this.handleUpdateFilter}
             />
           </div>
           <div>
-            <ClearButton id="clear-button" floated="right" onClick={this.clearFilters}>
+            <ClearButton
+              floated="right"
+              onClick={this.clearFilters}
+              data-test="reset-filters-button"
+            >
               CLEAR FILTERS
             </ClearButton>
           </div>

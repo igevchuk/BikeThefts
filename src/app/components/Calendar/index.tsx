@@ -1,48 +1,35 @@
 import * as React from 'react';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
 import * as moment from 'moment';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { Calendar as StyledCalendar } from './styled';
+import { DATE_FORMAT } from 'app/constants';
 // import 'react-day-picker/lib/style.css';
 import './style.css';
 // const style = require('react-day-picker/lib/style.css');
 
 export namespace Calendar {
   export interface Props {
-    id?: string;
     name: string;
     selected: number;
     onSelect(name: string, value: number): void;
   }
-  export interface State {
-    selected: Date;
-  }
 }
 
-export class Calendar extends React.Component<Calendar.Props, Calendar.State> {
-  constructor(props: Calendar.Props, context?: any) {
-    super(props);
-    this.state = {
-      selected: new Date()
-    };
-  }
+export const Calendar: React.SFC<Calendar.Props> = (props) => {
+  const { name, selected, onSelect } = props;
 
-  handleChange = (date: Date): void => {
-    const { name, onSelect } = this.props;
+  const handleChange = (date: Date): void => {
     this.setState({ selected: date });
     onSelect(name, moment(date).unix());
   };
 
-  render() {
-    const { ...rest } = this.props;
-    const FORMAT = 'M/D/YYYY';
-    return (
-      <StyledCalendar className="calendar" id={rest.id}>
-        <DayPickerInput
-          // selected={new Date(selected)}
-          format={FORMAT}
-          onDayChange={this.handleChange}
-        />
-      </StyledCalendar>
-    );
-  }
-}
+  return (
+    <StyledCalendar className="calendar" data-test="datepicker-component">
+      <DayPickerInput
+        // selected={new Date(selected)}
+        format={DATE_FORMAT}
+        onDayChange={handleChange}
+      />
+    </StyledCalendar>
+  );
+};
