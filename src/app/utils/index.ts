@@ -13,8 +13,12 @@ export function omit<T extends object, K extends keyof T>(target: T, ...omitKeys
   );
 }
 
-export function formatDate(input: string | number, format?: string): string {
-  return moment(input).format(format || 'LLL');
+export function formatDate(input: string | number, format = 'MMMM Do, YYYY'): string {
+  const momentObj = moment(input);
+  if(!momentObj.isValid()) {
+    return '';
+  }
+  return momentObj.format(format);
 }
 
 export const fetchUrl = <T>(url: string): Promise<T> =>

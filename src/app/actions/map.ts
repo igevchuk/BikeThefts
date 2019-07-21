@@ -5,7 +5,7 @@ import { fetchUrl } from 'app/utils';
 
 export namespace MapActions {
   export enum Type {
-    FETCH_GEO_JSON_STARTED = 'FETCH_GEO_JSON',
+    FETCH_GEO_JSON_STARTED = 'FETCH_GEO_JSON_STARTED',
     FETCH_GEO_JSON_FAILED = 'FETCH_GEO_JSON_FAILED',
     FETCH_GEO_JSON_SUCCESS = 'FETCH_GEO_JSON_SUCCESS'
   }

@@ -4,9 +4,11 @@ import { RouteComponentProps } from 'react-router';
 import GoogleMapReact from 'google-map-react';
 import { Icon } from 'semantic-ui-react';
 import { DetailsActions, MapActions } from 'app/actions';
-import { DetailsState, MapState } from 'app/reducers';
+import { RootState, DetailsState, MapState } from 'app/reducers';
 import { IncidentModel } from 'app/models';
 import { omit } from 'app/utils';
+import { Message } from 'semantic-ui-react';
+import { Loader } from 'app/components/Loader';
 import { MapMarker } from 'app/components/MapMarker';
 import {
   DetailsContainer,
@@ -26,8 +28,7 @@ const BikePlaceholder = require('./assets/bike-placeholder.png');
 
 export namespace IncidentDetails {
   export interface Props extends RouteComponentProps<any> {
-    actions: DetailsActions;
-    mapActions: MapActions;
+    actions: {};
     details: IncidentModel;
     isLoading?: boolean;
     error?: any;
@@ -47,8 +48,9 @@ export namespace IncidentDetails {
 const actions = { ...omit(DetailsActions, 'Type'), ...omit(MapActions, 'Type') };
 
 @connect(
-  (state: DetailsState, ownProps) => {
-    const { details, isLoading, error } = state;
+  (state: RootState, ownProps) => {
+    const { detailsState } = state;
+    const { details, isLoading, error } = detailsState;
     return { details, isLoading, error };
   },
   (dispatch: Dispatch): Pick<IncidentDetails.Props, 'actions'> => ({
@@ -57,8 +59,9 @@ const actions = { ...omit(DetailsActions, 'Type'), ...omit(MapActions, 'Type') }
 )
 
 @connect(
-  (state: MapState, ownProps) => {
-    const { coordinates, isLoading, hasLoaded, error } = state;
+  (state: RootState, ownProps) => {
+    const { mapState } = state;
+    const { coordinates, isLoading, hasLoaded, error } = mapState;
     return { map: {
       coordinates,
       isLoading,
@@ -79,7 +82,7 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
       details: { id, occurred_at, title }
     } = props;
 
-    if (!map.hasLoaded && id && occurred_at && title) {
+    if (!map.hasLoaded && !map.isLoading && id && occurred_at && title) {
       this.loadMap({ occurred_at, title });
     }
   }
@@ -98,9 +101,8 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
   };
 
   loadMap = ({ occurred_at, title }: IncidentDetails.mapRequestParams): void => {
-    const { mapActions } = this.props;
-
-    mapActions.getGeoJson({ occurred_at, title });
+    const { actions } = this.props;
+    actions.getGeoJson({ occurred_at, title });
   };
 
   getImage = (media: IncidentModel.media): string => {
@@ -113,11 +115,13 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
   renderMap = (): React.ReactNode => {
     const { map } = this.props;
     const { coordinates, isLoading, hasLoaded, error } = map;
-    const [longitude, latitude] = coordinates;
+    let latitude, longitude;
 
-    if(!longitude || !latitude) {
+    if(!coordinates) {
       return null;
     }
+
+    [latitude, longitude] = coordinates;
 
     return (
       <GoogleMapReact
@@ -137,6 +141,18 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
       error,
       details: { address, description, media, occurred_at, title }
     } = this.props;
+
+    if(isLoading) {
+      return <Loader />;
+    }
+
+    if(error) {
+      return (
+        <Message negative={true} data-test="error-message">
+          <Message.Header>{error.toString()}</Message.Header>
+        </Message>
+      )
+    }
 
     return (
       <DetailsContainer className="incident-details" data-test="incident-component">

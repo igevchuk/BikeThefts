@@ -42,8 +42,7 @@ export namespace Home {
 export class Home extends React.Component<Home.Props, Home.State> {
   readonly defaultFilters = {
     occurred_after: moment()
-      .subtract(1, 'years')
-      .unix(),
+      .subtract(1, 'years').unix(),
     occurred_before: moment().unix(),
     query: '',
     proximity: ''
@@ -59,6 +58,12 @@ export class Home extends React.Component<Home.Props, Home.State> {
   componentDidMount(): void {
     this.fetchData();
   }
+
+  fetchData = (queryOptions: {} = {} as Home.State): void => {
+    const { actions } = this.props;
+
+    actions.fetchIncidents({ ...queryOptions });
+  };
 
   clearFilters = (): void => {
     this.setState({ ...this.defaultFilters }, () => {
@@ -77,15 +82,9 @@ export class Home extends React.Component<Home.Props, Home.State> {
     });
   };
 
-  fetchData = (queryOptions: {} = {} as Home.State): void => {
-    const { actions } = this.props;
-
-    actions.fetchIncidents({ ...queryOptions });
-  };
-
   renderContent = (): React.ReactNode => {
     const { incidents, error, isLoading } = this.props;
-    console.log(135636, this.props)
+
     if(isLoading) {
       return <Loader />
     } else if(error) {
@@ -109,6 +108,7 @@ export class Home extends React.Component<Home.Props, Home.State> {
 
   render() {
     const { occurred_after, occurred_before, query, proximity } = this.state;
+    console.log(this.state)
 
     return (
       <HomeContainer className="home-container">
@@ -130,7 +130,7 @@ export class Home extends React.Component<Home.Props, Home.State> {
             Occurred after:{' '}
             <Calendar
               name="occurred_after"
-              selected={occurred_before}
+              selectedDay={occurred_after}
               onSelect={this.handleUpdateFilter}
             />
           </div>
@@ -138,7 +138,7 @@ export class Home extends React.Component<Home.Props, Home.State> {
             Occurred before:{' '}
             <Calendar
               name="occurred_before"
-              selected={occurred_after}
+              selectedDay={occurred_before}
               onSelect={this.handleUpdateFilter}
             />
           </div>

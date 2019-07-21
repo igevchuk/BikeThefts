@@ -20,13 +20,16 @@ export const detailsReducer = handleActions<DetailsState, any>(
     [DetailsActions.Type.FETCH_INCIDENT_DETAILS_SUCCESS]: (state, action) => {
       return {
         ...state,
-        details: { ...action.payload }
+        details: { ...action.payload },
+        isLoading: false,
+        error: null
       };
     },
     [DetailsActions.Type.FETCH_INCIDENT_DETAILS_FAILED]: (state, action) => {
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
+        isLoading: false
       };
     }
   },

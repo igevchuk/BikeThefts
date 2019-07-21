@@ -18,7 +18,7 @@ export const mapReducer = handleActions<MapState, any>(
         isLoading: true
       };
     },
-    [MapActions.Type.FETCH_GEO_JSON_STARTED]: (state, action) => {
+    [MapActions.Type.FETCH_GEO_JSON_SUCCESS]: (state, action) => {
       return {
         ...state,
         coordinates: action.payload,
