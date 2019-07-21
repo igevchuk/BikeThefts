@@ -16,9 +16,10 @@ export namespace MapActions {
   }
 
   export const getGeoJson = ({ occurred_at, title }: GeoRequestParams) => {
+    console.log(occurred_at, title)
     const params = queryString.stringify({
-      occurred_before: occurred_at + 1, // api sometimes return nothing with exact timestamps
-      occurred_after: occurred_at - 1,
+      occurred_before: occurred_at, // api sometimes return nothing with exact timestamps
+      occurred_after: occurred_at,
       incident_type: INCIDENT_TYPE,
       query: title
     });
@@ -32,8 +33,10 @@ export namespace MapActions {
     };
 
     return (dispatch: Dispatch) => {
+      const url = `${GEO_API_URL}?${params}`;
+
       dispatch({ type: MapActions.Type.FETCH_GEO_JSON_STARTED });
-      return fetchUrl(`${GEO_API_URL}?${params}`)
+      fetchUrl(url)
         .then((payload: Payload) => payload.features[0].geometry.coordinates)
         .then((coordinates: [number, number]) => dispatch(fetchGeoJsonSuccess(coordinates)))
         .catch((error: string) => dispatch(fetchGeoJsonFailed(error)));

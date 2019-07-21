@@ -12,6 +12,7 @@ import { Loader } from 'app/components/Loader';
 import { Search } from 'app/components/Search';
 import { IncidentList } from 'app/components';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 const { connect } = require('react-redux');
 
 export namespace Home {
@@ -22,8 +23,8 @@ export namespace Home {
     actions: IncidentsActions;
   }
   export interface State {
-    occurred_after: number;
-    occurred_before: number;
+    occurred_after: moment.Moment;
+    occurred_before: moment.Moment;
     query: string;
     proximity: string;
   }
@@ -42,8 +43,8 @@ export namespace Home {
 export class Home extends React.Component<Home.Props, Home.State> {
   readonly defaultFilters = {
     occurred_after: moment()
-      .subtract(1, 'years').unix(),
-    occurred_before: moment().unix(),
+      .subtract(10, 'years'),
+    occurred_before: moment(),
     query: '',
     proximity: ''
   };
@@ -56,7 +57,7 @@ export class Home extends React.Component<Home.Props, Home.State> {
   }
 
   componentDidMount(): void {
-    this.fetchData();
+    this.fetchData(this.normalizeFilters());
   }
 
   fetchData = (queryOptions: {} = {} as Home.State): void => {
@@ -67,18 +68,32 @@ export class Home extends React.Component<Home.Props, Home.State> {
 
   clearFilters = (): void => {
     this.setState({ ...this.defaultFilters }, () => {
-      this.fetchData(this.defaultFilters);
+      this.fetchData(this.normalizeFilters());
     });
   };
 
-  handleUpdateFilter = (name: keyof Home.State, value: string | number): void => {
+  normalizeFilters = (): {} => {
+    const copy = {...this.state};
+    const keys = Object.keys(copy);
+
+    keys.forEach(key => {
+      if(moment.isMoment(copy[key])) {
+        copy[key] = copy[key].unix()
+      }
+    });
+
+    return copy;
+  }
+
+  handleUpdateFilter = (name: keyof Home.State, value: string | moment.Moment ): void => {
     const newState = {
       ...this.state,
       [name]: value
     } as Home.State;
+    const debounced: ({}) => void = _.debounce(this.fetchData, 300);
 
     this.setState(newState, () => {
-      this.fetchData(this.state);
+      debounced(this.normalizeFilters());
     });
   };
 
@@ -89,14 +104,14 @@ export class Home extends React.Component<Home.Props, Home.State> {
       return <Loader />
     } else if(error) {
         return (
-        <Message negative={true} data-test="error-message">
+        <Message negative={true} data-test="error-message" style={{ margin: '0 1rem' }}>
           <Message.Header>{ error.toString() }</Message.Header>
           <p>Try later.</p>
         </Message>
       )
     } else if (incidents.length === 0) {
       return (
-        <Message data-test="success-message">
+        <Message data-test="success-message" style={{ margin: '0 1rem' }}>
           <Message.Header>No results found.</Message.Header>
           <p>Try to change your search criteria.</p>
         </Message>

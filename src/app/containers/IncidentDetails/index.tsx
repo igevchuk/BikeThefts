@@ -83,6 +83,7 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
     } = props;
 
     if (!map.hasLoaded && !map.isLoading && id && occurred_at && title) {
+      console.log('loading map')
       this.loadMap({ occurred_at, title });
     }
   }
@@ -102,6 +103,7 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
 
   loadMap = ({ occurred_at, title }: IncidentDetails.mapRequestParams): void => {
     const { actions } = this.props;
+
     actions.getGeoJson({ occurred_at, title });
   };
 
@@ -117,17 +119,17 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
     const { coordinates, isLoading, hasLoaded, error } = map;
     let latitude, longitude;
 
-    if(!coordinates) {
-      return null;
+    if(!coordinates || !hasLoaded || error || isLoading) {
+      return <div />;
     }
 
-    [latitude, longitude] = coordinates;
+    [longitude, latitude] = coordinates;
 
     return (
       <GoogleMapReact
         bootstrapURLKeys={{ key: GOOGLE_MAPS_API_KEY }}
         defaultCenter={{ lat: latitude, lng: longitude }}
-        defaultZoom={11}
+        defaultZoom={16}
         data-test="incident-map"
       >
         <MapMarker lat={latitude} lng={longitude} text="Place of incident" />

@@ -21,7 +21,8 @@ export const incidentsReducer = handleActions<IncidentsState, any>(
       return {
         ...state,
         error: action.error,
-        isLoading: false
+        isLoading: false,
+        incidents: []
       };
     },
     [IncidentsActions.Type.FETCH_INCIDENTS_SUCCESS]: (state, action) => {
