@@ -16,3 +16,12 @@ export function omit<T extends object, K extends keyof T>(target: T, ...omitKeys
 export function formatDate(input: string | number, format?: string): string {
   return moment(input).format(format || 'LLL');
 }
+
+export const fetchUrl = <T>(url: string): Promise<T> =>
+  fetch(url).then((response) => {
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return response.json();
+  });

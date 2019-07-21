@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { RouteComponentProps } from 'react-router';
-import { IncidentActions } from 'app/actions';
+import { IncidentsActions } from 'app/actions';
 import { RootState } from 'app/reducers';
 import { IncidentModel } from 'app/models';
 import { omit } from 'app/utils';
 import { Message } from 'semantic-ui-react';
 import { HomeContainer, Filters, ClearButton } from './styled';
 import { Calendar } from 'app/components/Calendar';
+import { Loader } from 'app/components/Loader';
 import { Search } from 'app/components/Search';
 import { IncidentList } from 'app/components';
 import * as moment from 'moment';
@@ -18,34 +19,34 @@ export namespace Home {
     incidents: IncidentModel[];
     isLoading: boolean;
     error?: any;
-    actions: IncidentActions;
+    actions: IncidentsActions;
   }
   export interface State {
-    occured_after: number;
-    occured_before: number;
+    occurred_after: number;
+    occurred_before: number;
     query: string;
     proximity: string;
   }
 }
 
 @connect(
-  (state: any, ownProps) => {
-    const { incidentState } = state;
-    const { incidents, isLoading, error } = incidentState;
+  (state: RootState, ownProps) => {
+    const { incidentsState } = state;
+    const { incidents, isLoading, error } = incidentsState;
     return { incidents, isLoading, error };
   },
   (dispatch: Dispatch): Pick<Home.Props, 'actions'> => ({
-    actions: bindActionCreators(omit(IncidentActions, 'Type'), dispatch)
+    actions: bindActionCreators(omit(IncidentsActions, 'Type'), dispatch)
   })
 )
 export class Home extends React.Component<Home.Props, Home.State> {
   readonly defaultFilters = {
-    occured_after: moment()
+    occurred_after: moment()
       .subtract(1, 'years')
       .unix(),
-    occured_before: moment().unix(),
+    occurred_before: moment().unix(),
     query: '',
-    proximity: 'Kyiv, Ukraine'
+    proximity: ''
   };
 
   constructor(props: Home.Props, context?: any) {
@@ -83,11 +84,20 @@ export class Home extends React.Component<Home.Props, Home.State> {
   };
 
   renderContent = (): React.ReactNode => {
-    const { incidents } = this.props;
-
-    if (incidents.length === 0) {
+    const { incidents, error, isLoading } = this.props;
+    console.log(135636, this.props)
+    if(isLoading) {
+      return <Loader />
+    } else if(error) {
+        return (
+        <Message negative={true} data-test="error-message">
+          <Message.Header>{ error.toString() }</Message.Header>
+          <p>Try later.</p>
+        </Message>
+      )
+    } else if (incidents.length === 0) {
       return (
-        <Message data-test="message-component">
+        <Message data-test="success-message">
           <Message.Header>No results found.</Message.Header>
           <p>Try to change your search criteria.</p>
         </Message>
@@ -98,7 +108,7 @@ export class Home extends React.Component<Home.Props, Home.State> {
   };
 
   render() {
-    const { occured_after, occured_before, query, proximity } = this.state;
+    const { occurred_after, occurred_before, query, proximity } = this.state;
 
     return (
       <HomeContainer className="home-container">
@@ -117,18 +127,18 @@ export class Home extends React.Component<Home.Props, Home.State> {
             handleSearch={this.handleUpdateFilter}
           />
           <div>
-            Occured after:{' '}
+            Occurred after:{' '}
             <Calendar
-              name="occured_after"
-              selected={occured_before}
+              name="occurred_after"
+              selected={occurred_before}
               onSelect={this.handleUpdateFilter}
             />
           </div>
           <div>
-            Occured before:{' '}
+            Occurred before:{' '}
             <Calendar
-              name="occured_before"
-              selected={occured_after}
+              name="occurred_before"
+              selected={occurred_after}
               onSelect={this.handleUpdateFilter}
             />
           </div>
