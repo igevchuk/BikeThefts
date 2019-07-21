@@ -6,7 +6,7 @@ import { RootState } from 'app/reducers';
 import { IncidentModel } from 'app/models';
 import { omit } from 'app/utils';
 import { Message } from 'semantic-ui-react';
-import { HomeContainer, Filters, ClearButton } from './styled';
+import { HomeContainer, Filters, ClearButton, Counter } from './styled';
 import { Calendar } from 'app/components/Calendar';
 import { Loader } from 'app/components/Loader';
 import { Search } from 'app/components/Search';
@@ -103,16 +103,20 @@ export class Home extends React.Component<Home.Props, Home.State> {
       );
     }
 
-    return <IncidentList incidents={incidents} />;
+    return (
+      <div>
+        <Counter>Found: {incidents.length} results.</Counter>
+        <IncidentList incidents={incidents} />
+      </div>
+    );
   };
 
   render() {
     const { occurred_after, occurred_before, query, proximity } = this.state;
-    console.log(this.state)
 
     return (
       <HomeContainer className="home-container">
-        <h1>List of stolen bikes</h1>
+        <h1 style={{ padding: '0 1rem' }}>List of stolen bikes</h1>
         <Filters>
           <Search
             name="query"
@@ -126,30 +130,29 @@ export class Home extends React.Component<Home.Props, Home.State> {
             value={proximity}
             handleSearch={this.handleUpdateFilter}
           />
-          <div>
-            Occurred after:{' '}
-            <Calendar
-              name="occurred_after"
-              selectedDay={occurred_after}
-              onSelect={this.handleUpdateFilter}
-            />
-          </div>
-          <div>
-            Occurred before:{' '}
-            <Calendar
-              name="occurred_before"
-              selectedDay={occurred_before}
-              onSelect={this.handleUpdateFilter}
-            />
-          </div>
-          <div>
-            <ClearButton
-              floated="right"
-              onClick={this.clearFilters}
-              data-test="reset-filters-button"
-            >
-              CLEAR FILTERS
-            </ClearButton>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex' }}>
+              <Calendar
+                name="occurred_after"
+                selectedDay={occurred_after}
+                onSelect={this.handleUpdateFilter}
+              />
+
+              <Calendar
+                name="occurred_before"
+                selectedDay={occurred_before}
+                onSelect={this.handleUpdateFilter}
+              />
+            </div>
+            <div>
+              <ClearButton
+                floated="right"
+                onClick={this.clearFilters}
+                data-test="reset-filters-button"
+              >
+                CLEAR FILTERS
+              </ClearButton>
+            </div>
           </div>
         </Filters>
         {this.renderContent()}

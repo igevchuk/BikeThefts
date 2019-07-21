@@ -13,7 +13,7 @@ export const IncidentList: React.SFC<IncidentList.Props> = (props) => {
 
   return (
     <section className="incident-list" data-test="incident-list-component">
-      <ul>
+      <ul style={{ padding: '0 1em' }}>
         {incidents.map((incident) => (
           <IncidentListItem incident={incident} key={incident.id} />
         ))}

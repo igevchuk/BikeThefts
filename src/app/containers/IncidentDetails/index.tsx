@@ -28,7 +28,7 @@ const BikePlaceholder = require('./assets/bike-placeholder.png');
 
 export namespace IncidentDetails {
   export interface Props extends RouteComponentProps<any> {
-    actions: {};
+    actions: MapActions & DetailsActions;
     details: IncidentModel;
     isLoading?: boolean;
     error?: any;

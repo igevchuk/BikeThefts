@@ -8,7 +8,13 @@ export const HomeContainer = styled(Container)`
 export const Filters = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 1rem;
+  margin: 1rem 1rem 2rem;
+`;
+
+export const Counter = styled.div`
+  margin: 0 1rem;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
 `;
 
 export const ClearButton = styled(Button)`
