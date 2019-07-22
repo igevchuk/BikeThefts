@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
-import { Home } from 'app/containers/Home';
+import Home from 'app/containers/Home';
 import { IncidentDetails } from 'app/containers/IncidentDetails';
 import { hot } from 'react-hot-loader';
 

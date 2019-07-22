@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Search as StyledSearch } from './styled';
 import { Input } from 'semantic-ui-react';
 
-namespace Search {
+export namespace Search {
   export interface Props {
     name: string;
     placeholder?: string;

@@ -1,9 +1,9 @@
 import * as Enzyme from 'enzyme';
 import { createStore, applyMiddleware } from 'redux';
-// import thunk from 'redux-thunk';
-// import { rootReducer } from 'app/reducers';
+import thunk from 'redux-thunk';
+import { rootReducer } from 'app/reducers';
 
-// const middlewares = [thunk];
+const middlewares = [thunk];
 
 /**
  * Create a testing store with imported reducers, middleware, and initial state.
@@ -12,10 +12,10 @@ import { createStore, applyMiddleware } from 'redux';
  * @function storeFactory
  * @returns {Store} - Redux store.
  */
-// export const storeFactory = (initialState) => {
-//   const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
-//   return createStoreWithMiddleware(rootReducer, initialState);
-// };
+export const storeFactory = (initialState) => {
+  const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
+  return createStoreWithMiddleware(rootReducer, initialState);
+};
 
 export const findBySelector = (
   wrapper: Enzyme.ShallowWrapper,

@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
+import * as moment from 'moment';
+import * as _ from 'lodash';
 import { IncidentsActions } from 'app/actions';
 import { RootState } from 'app/reducers';
 import { IncidentModel } from 'app/models';
-import { omit } from 'app/utils';
 import { Message } from 'semantic-ui-react';
 import { HomeContainer, Filters, ClearButton, Counter } from './styled';
 import { Calendar } from 'app/components/Calendar';
 import { Loader } from 'app/components/Loader';
 import { Search } from 'app/components/Search';
 import { IncidentList } from 'app/components';
-import * as moment from 'moment';
-import * as _ from 'lodash';
-const { connect } = require('react-redux');
+import { omit } from 'app/utils';
 
 export namespace Home {
   export interface Props extends RouteComponentProps<void> {
@@ -30,17 +30,7 @@ export namespace Home {
   }
 }
 
-@connect(
-  (state: RootState, ownProps) => {
-    const { incidentsState } = state;
-    const { incidents, isLoading, error } = incidentsState;
-    return { incidents, isLoading, error };
-  },
-  (dispatch: Dispatch): Pick<Home.Props, 'actions'> => ({
-    actions: bindActionCreators(omit(IncidentsActions, 'Type'), dispatch)
-  })
-)
-export class Home extends React.Component<Home.Props, Home.State> {
+export class UnconnectedHome extends React.Component<Home.Props, Home.State> {
   readonly defaultFilters = {
     occurred_after: moment().subtract(10, 'years'),
     occurred_before: moment(),
@@ -110,7 +100,7 @@ export class Home extends React.Component<Home.Props, Home.State> {
       );
     } else if (incidents.length === 0) {
       return (
-        <Message data-test="success-message" style={{ margin: '0 1rem' }}>
+        <Message data-test="no-results-message" style={{ margin: '0 1rem' }}>
           <Message.Header>No results found.</Message.Header>
           <p>Try to change your search criteria.</p>
         </Message>
@@ -180,3 +170,19 @@ export class Home extends React.Component<Home.Props, Home.State> {
     );
   }
 }
+
+const mapStateToProps = (state: RootState) => {
+  const { incidentsState } = state;
+  const { incidents, isLoading, error } = incidentsState;
+  return { incidents, isLoading, error };
+};
+const mapDispatchToProps = (dispatch: any) => ({
+  actions: {
+    fetchIncidents: (options) => dispatch(IncidentsActions.fetchIncidents(options))
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UnconnectedHome);

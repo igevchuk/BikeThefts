@@ -36,8 +36,8 @@ export namespace IncidentDetails {
       coordinates?: [number, number];
       isLoading?: boolean;
       hasLoaded?: boolean;
-      error?: any
-    }
+      error?: any;
+    };
   }
   export type mapRequestParams = {
     occurred_at: number;
@@ -45,7 +45,7 @@ export namespace IncidentDetails {
   };
 }
 
-const actions = { ...omit(DetailsActions, 'Type'), ...omit(MapActions, 'Type') };
+export const actions = { ...omit(DetailsActions, 'Type'), ...omit(MapActions, 'Type') };
 
 @connect(
   (state: RootState, ownProps) => {
@@ -57,19 +57,18 @@ const actions = { ...omit(DetailsActions, 'Type'), ...omit(MapActions, 'Type') }
     actions: bindActionCreators(actions, dispatch)
   })
 )
-
-@connect(
-  (state: RootState, ownProps) => {
-    const { mapState } = state;
-    const { coordinates, isLoading, hasLoaded, error } = mapState;
-    return { map: {
+@connect((state: RootState, ownProps) => {
+  const { mapState } = state;
+  const { coordinates, isLoading, hasLoaded, error } = mapState;
+  return {
+    map: {
       coordinates,
       isLoading,
       hasLoaded,
       error
-    } };
-  }
-)
+    }
+  };
+})
 export class IncidentDetails extends React.Component<IncidentDetails.Props> {
   componentDidMount() {
     this.fetchIncidentDetails();
@@ -83,7 +82,7 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
     } = props;
 
     if (!map.hasLoaded && !map.isLoading && id && occurred_at && title) {
-      console.log('loading map')
+      console.log('loading map');
       this.loadMap({ occurred_at, title });
     }
   }
@@ -119,7 +118,7 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
     const { coordinates, isLoading, hasLoaded, error } = map;
     let latitude, longitude;
 
-    if(!coordinates || !hasLoaded || error || isLoading) {
+    if (!coordinates || !hasLoaded || error || isLoading) {
       return <div />;
     }
 
@@ -134,8 +133,8 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
       >
         <MapMarker lat={latitude} lng={longitude} text="Place of incident" />
       </GoogleMapReact>
-    )
-  }
+    );
+  };
 
   render() {
     const {
@@ -144,16 +143,16 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
       details: { address, description, media, occurred_at, title }
     } = this.props;
 
-    if(isLoading) {
+    if (isLoading) {
       return <Loader />;
     }
 
-    if(error) {
+    if (error) {
       return (
         <Message negative={true} data-test="error-message">
           <Message.Header>{error.toString()}</Message.Header>
         </Message>
-      )
+      );
     }
 
     return (
@@ -187,7 +186,7 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
         </DetailsBox>
 
         <IncidentMapContainer className="incident-map-container" data-test="incident-map-container">
-          { this.renderMap() }
+          {this.renderMap()}
         </IncidentMapContainer>
       </DetailsContainer>
     );

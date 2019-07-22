@@ -1,43 +1,67 @@
 import * as React from 'react';
-import { shallow, mount, render, ShallowWrapper } from 'enzyme';
-
-import { IncidentDetails } from './../../IncidentDetails';
+import { shallow, mount, ShallowWrapper } from 'enzyme';
+import { IncidentDetails, actions } from './../../IncidentDetails';
 import { findByDataAttr } from 'app/testUtils';
 import { GEO_COORDINATES } from 'app/constants';
 
-var setup = (props = {}): ShallowWrapper => {
-  var component = shallow(<IncidentDetails {...props} />);
-  return component;
+const setup = (props = {}): ShallowWrapper => {
+  const wrapper = shallow(<IncidentDetails {...props} />);
+  return wrapper;
 };
 
-describe('IncidentDetails Component', () => {
+describe('<IncidentDetails />', () => {
   let wrapper: ShallowWrapper;
+  const defaultProps = {
+    actions,
+    details: {
+      address: 'Dresden, 01307, DE',
+      description: '',
+      id: 103932,
+      media: {
+        image_url: 'https://files.bikeindex.org/uploads/Pu/170591/large_20190518_112509.jpg'
+      },
+      occurred_at: 1563742800,
+      title: 'Stolen 2017 Orbea Oiz 29(black and green)'
+    },
+    map: {}
+  };
 
   beforeEach(() => {
-    wrapper = setup();
+    wrapper = setup({ ...defaultProps });
   });
 
   test('renders without crashing', () => {
-    expect(wrapper.length).toBeTruthy();
+    const component = findByDataAttr(wrapper, 'incident-component');
+    expect(component.length).toBe(1);
   });
 
-  describe('Map Component', () => {
-    const mapContainer = findByDataAttr(wrapper, 'incident-map-container');
+  // test('renders title', () => {
+  //   const titleNode = findByDataAttr(wrapper, 'incident-title');
+  //   expect(titleNode.length).toBe(1);
+  // });
 
-    test('renders map container', () => {
-      expect(mapContainer).toBeTruthy();
-    });
+  // test('renders image', () => {
+  //   const imageHolder = findByDataAttr(wrapper, 'incident-image');
+  //   expect(imageHolder.length).toBe(1);
+  // });
 
-    test("doesn't render Google maps when coordinates are not available", () => {
-      let wrapper = setup({ coordinates: [] });
-      let map = findByDataAttr(wrapper, 'incident-map');
-      expect(map.length).toBe(0);
-    });
+  // test('renders date', () => {
+  //   const dateNode = findByDataAttr(wrapper, 'incident-date');
+  //   expect(dateNode.length).toBe(1);
+  // });
 
-    test('renders Google maps when coordinates are defined', () => {
-      let wrapper = setup({ coordinates: [...GEO_COORDINATES] });
-      let map = findByDataAttr(wrapper, 'incident-map');
-      expect(map.length).toBe(1);
-    });
-  });
+  // test('renders address', () => {
+  //   const addressNode = findByDataAttr(wrapper, 'incident-location');
+  //   expect(addressNode.length).toBe(1);
+  // });
+
+  // test('renders description', () => {
+  //   const descriptionNode = findByDataAttr(wrapper, 'incident-description');
+  //   expect(descriptionNode.length).toBe(1);
+  // });
+
+  // test('renders map container', () => {
+  //   const mapContainer = findByDataAttr(wrapper, 'incident-map-container');
+  //   expect(mapContainer.length).toBe(1);
+  // });
 });
