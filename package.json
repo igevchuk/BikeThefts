@@ -94,7 +94,7 @@
     "react-dates": "^20.2.5",
     "react-day-picker": "^7.3.0",
     "react-dom": "^16.8.6",
-    "react-redux": "^6.0.0",
+    "react-redux": "^6.0.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.1",
@@ -108,7 +108,7 @@
     "styled-components": "^4.3.2"
   },
   "jest": {
-    "verbose": true,
+    "verbose": false,
     "setupFiles": [
       "<rootDir>/test-shim.js",
       "<rootDir>/test-setup.js"

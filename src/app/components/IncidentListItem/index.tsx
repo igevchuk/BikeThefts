@@ -13,13 +13,13 @@ import { formatDate } from 'app/utils';
 
 const BikePlaceholder = require('./assets/bike-placeholder.png');
 
-namespace IncidentListItem {
+namespace IncidentListItemFoo {
   export interface Props {
     incident: IncidentModel;
   }
 }
 
-export const IncidentListItem: React.SFC<IncidentListItem.Props> = (props) => {
+export const IncidentListItem: React.SFC<IncidentListItemFoo.Props> = (props) => {
   const { incident } = props;
   const {
     title,
@@ -46,7 +46,7 @@ export const IncidentListItem: React.SFC<IncidentListItem.Props> = (props) => {
         </IncidentTitle>
 
         <IncidentInfo className="incident-info" data-test="incident-component-date">
-          <Icon name="calendar alternate outline" /> {formatDate(occurred_at, 'MMMM Do, YYYY') }
+          <Icon name="calendar alternate outline" /> {formatDate(occurred_at, 'MMMM Do, YYYY')}
         </IncidentInfo>
 
         <IncidentInfo className="incident-info" data-test="incident-component-address">

@@ -8,30 +8,30 @@ import { IncidentListItem } from './../../IncidentListItem';
 
 const mockStore = configureMockStore();
 
-const defaultProps: IncidentModel = {
-  incident: {
-    title: 'Incident List Item Title',
-    media: { image_url_thumb: '' },
-    occurred_at: 5166178,
-    address: 'Incident List Item address',
-    id: 1
-  }
-};
-
-const setup = (props = {}): ShallowWrapper => {
-  const setupProps = { ...defaultProps, ...props };
-  return shallow(<IncidentListItem {...setupProps} />);
+const setup = (props = {} as IncidentModel): ShallowWrapper => {
+  return shallow(<IncidentListItem {...props} />);
 };
 
 describe('<IncidentListItem />', () => {
   let wrapper: ShallowWrapper;
 
+  const props = {
+    incident: {
+      title: 'Foo',
+      media: { image_url_thumb: './assets/fake.png' },
+      occurred_at: 1563786757686,
+      address: 'Springfield, NY',
+      id: 1
+    }
+  };
+
   beforeEach(() => {
-    wrapper = setup();
+    wrapper = setup({ ...props });
   });
 
   test('renders without crashing', () => {
-    expect(wrapper.length).toBe(1);
+    const component = findByDataAttr(wrapper, 'incident-component');
+    expect(component.length).toBe(1);
   });
 
   test('renders image holder', () => {
@@ -44,20 +44,9 @@ describe('<IncidentListItem />', () => {
     expect(title.length).toBe(1);
   });
 
-  test('renders title text', () => {
-    const title = findByDataAttr(wrapper, 'incident-component-title');
-    expect(title.text()).toEqual(defaultProps.incident.title);
-  });
-
   test('renders date', () => {
     const dateComponent = findByDataAttr(wrapper, 'incident-component-date');
     expect(dateComponent.length).toBe(1);
-  });
-
-  test('renders date value', () => {
-    const dateComponent = findByDataAttr(wrapper, 'incident-component-date');
-    const formattedDate = formatDate(defaultProps.incident.occurred_at);
-    expect(dateComponent.text()).toContain(formattedDate);
   });
 
   test('renders address', () => {
@@ -65,18 +54,38 @@ describe('<IncidentListItem />', () => {
     expect(addressComponent.length).toBe(1);
   });
 
-  test('renders address value', () => {
-    const addressComponent = findByDataAttr(wrapper, 'incident-component-address');
-    expect(addressComponent.text()).toContain(defaultProps.incident.address);
-  });
-
   test('renders link', () => {
     const link = findByDataAttr(wrapper, 'incident-component-link');
     expect(link.length).toBe(1);
   });
 
-  test('link contains incident id', () => {
-    const link = findByDataAttr(wrapper, 'incident-component-link');
-    expect(link.prop('href')).toContain(defaultProps.incident.id);
+  describe('displays values passed as props', () => {
+    const { incident } = props;
+
+    test('displays title props', () => {
+      const title = findByDataAttr(wrapper, 'incident-component-title');
+      expect(title.text()).toContain(incident.title);
+    });
+
+    test('displays background image', () => {
+      const imageHolder = findByDataAttr(wrapper, 'incident-component-image');
+      expect(imageHolder.props().image).toEqual(incident.media.image_url_thumb);
+    });
+
+    test('displays date props', () => {
+      const dateComponent = findByDataAttr(wrapper, 'incident-component-date');
+      const formattedDate = formatDate(incident.occurred_at, 'MMMM Do, YYYY');
+      expect(dateComponent.text()).toContain(formattedDate);
+    });
+
+    test('renders address props', () => {
+      const addressComponent = findByDataAttr(wrapper, 'incident-component-address');
+      expect(addressComponent.text()).toContain(incident.address);
+    });
+
+    test('link contains incident id', () => {
+      const link = findByDataAttr(wrapper, 'incident-component-link');
+      expect(link.prop('href')).toContain(incident.id);
+    });
   });
 });
