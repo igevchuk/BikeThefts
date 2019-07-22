@@ -3,7 +3,7 @@ import { StyledMarker } from './styled';
 
 const icon = require('./assets/icon-marker.png');
 
-type Props = {
+export type Props = {
   lat: number;
   lng: number;
   text: string;

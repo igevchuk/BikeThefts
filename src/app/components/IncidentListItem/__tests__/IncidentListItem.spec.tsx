@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import configureMockStore from 'redux-mock-store';
 import { findByDataAttr } from 'app/testUtils';
 import { formatDate } from 'app/utils';
 import { IncidentModel } from 'app/models/IncidentModel';
 import { IncidentListItem } from './../../IncidentListItem';
-
-const mockStore = configureMockStore();
 
 const setup = (props = {} as IncidentModel): ShallowWrapper => {
   return shallow(<IncidentListItem {...props} />);
