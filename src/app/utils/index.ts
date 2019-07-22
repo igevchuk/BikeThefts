@@ -21,11 +21,23 @@ export function formatDate(input: string | number, format = 'MMMM Do, YYYY'): st
   return momentObj.format(format);
 }
 
-export const fetchUrl = <T>(url: string): Promise<T> =>
-  fetch(url).then((response) => {
+
+let abortController = new AbortController();
+
+export const fetchUrl = (url, cancel) => {
+
+  if(cancel) {
+    abortController.abort(); // Cancel the previous request
+  }
+
+  abortController = new AbortController();
+
+  return fetch(url, { signal: abortController.signal }).then((response) => {
     if (!response.ok) {
       throw new Error(response.statusText);
     }
 
     return response.json();
   });
+};
+

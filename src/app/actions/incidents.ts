@@ -18,11 +18,15 @@ export namespace IncidentsActions {
       incidents: IncidentModel[];
     };
 
-    return (dispatch: Dispatch) => {
+    return (dispatch: Dispatch, getState: Function) => {
+      const { incidentsState: { isLoading }} = getState();
+      console.log(34563, isLoading)
       dispatch({ type: IncidentsActions.Type.FETCH_INCIDENTS_STARTED });
-      fetchUrl(`${API_URL}?${stringified}`)
+      fetchUrl(`${API_URL}?${stringified}`, isLoading)
         .then((payload: Payload) => dispatch(fetchIncidentsSuccess(payload.incidents)))
-        .catch((error: string) => dispatch(fetchIncidentsFailed(error)));
+        .catch((error: string) => {
+          console.log(error)
+        }));
     }
   };
 

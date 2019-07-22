@@ -32,7 +32,7 @@ export namespace Home {
 
 export class UnconnectedHome extends React.Component<Home.Props, Home.State> {
   readonly defaultFilters = {
-    occurred_after: moment().subtract(10, 'years'),
+    occurred_after: moment().subtract(2, 'years'),
     occurred_before: moment(),
     query: '',
     proximity: ''
