@@ -82,7 +82,6 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
     } = props;
 
     if (!map.hasLoaded && !map.isLoading && id && occurred_at && title) {
-      console.log('loading map');
       this.loadMap({ occurred_at, title });
     }
   }

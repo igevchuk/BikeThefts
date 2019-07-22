@@ -23,9 +23,12 @@ export namespace IncidentsActions {
       dispatch({ type: IncidentsActions.Type.FETCH_INCIDENTS_STARTED });
       fetchUrl(`${API_URL}?${stringified}`, isLoading)
         .then((payload: Payload) => dispatch(fetchIncidentsSuccess(payload.incidents)))
-        .catch((error: string) => {
-          console.log(error)
-        }));
+        .catch((error: any) => {
+          if (error.name && error.name == 'AbortError') {
+            return;
+          }
+          return dispatch(fetchIncidentsFailed(error));
+        })
     }
   };
 

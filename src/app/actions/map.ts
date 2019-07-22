@@ -16,7 +16,6 @@ export namespace MapActions {
   }
 
   export const getGeoJson = ({ occurred_at, title }: GeoRequestParams) => {
-    console.log(occurred_at, title)
     const params = queryString.stringify({
       occurred_before: occurred_at, // api sometimes return nothing with exact timestamps
       occurred_after: occurred_at,

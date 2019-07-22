@@ -24,7 +24,7 @@ export function formatDate(input: number, format = 'MMMM Do, YYYY'): string {
 
 let abortController = new AbortController();
 
-export const fetchUrl = (url, cancel) => {
+export const fetchUrl = (url: string, cancel?: boolean) => {
 
   if(cancel) {
     abortController.abort(); // Cancel the previous request

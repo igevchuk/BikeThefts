@@ -30,9 +30,6 @@ export const IncidentListItem: React.SFC<IncidentListItem.Props> = (props) => {
     id
   } = incident;
 
-  const foo = moment.unix(occurred_at).format()
-  console.log(foo)
-
   return (
     <IncidentContainer className="incident" data-test="incident-component">
       <IncidentImage
