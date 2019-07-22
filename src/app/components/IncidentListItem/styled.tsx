@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Header } from 'semantic-ui-react';
 
-export const IncidentContainer = styled.div`
+export const IncidentContainer = styled.li`
   background-color: #ffffff;
   display: flex;
   flex-flow: row nowrap;
@@ -15,13 +15,8 @@ export const IncidentImage = styled.div`
   height: 123px;
   flex-grow: 0;
   flex-shrink: 0;
-  background-image: ${({
-    image,
-    fallback,
-  }: {
-  image: string
-  fallback: string
-  }) => `url(${image}), url(${fallback})`};
+  background-image: ${({ image, fallback }: { image: string; fallback: string }) =>
+    `url(${image}), url(${fallback})`};
   background-color: #f5f5f5;
   background-size: contain;
   background-repeat: no-repeat;
@@ -35,7 +30,7 @@ export const IncidentContent = styled.div`
 export const IncidentTitle = styled(Header)``;
 
 export const IncidentLink = styled.a`
-  color: ${props => props.theme.primaryColor};
+  color: ${(props) => props.theme.primaryColor};
   text-decoration: underline;
 `;
 
@@ -43,7 +38,6 @@ export const IncidentInfo = styled.div`
   margin-bottom: 0.5rem;
   line-height: 16px;
   & > i {
-    color: ${props => props.theme.primaryColor};
+    color: ${(props) => props.theme.primaryColor};
   }
 `;
-
