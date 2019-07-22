@@ -25,7 +25,7 @@ export const Calendar: React.SFC<Calendar.Props> = (props) => {
       {label && <label data-test="datepicker-label">{label}</label>}
       <DayPickerInput
         format="YYYY-MM-DD"
-        value={selectedDay.toDate()}
+        value={selectedDay ? selectedDay.toDate() : null}
         onDayChange={handleChange}
         data-test="datepicker-input"
       />

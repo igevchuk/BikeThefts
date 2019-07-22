@@ -32,7 +32,8 @@ export namespace Home {
 
 export class UnconnectedHome extends React.Component<Home.Props, Home.State> {
   readonly defaultFilters = {
-    occurred_after: moment().subtract(2, 'years'),
+    // occurred_after: moment().subtract(2, 'years'),
+    occurred_after: null,
     occurred_before: moment(),
     query: '',
     proximity: ''
@@ -79,7 +80,7 @@ export class UnconnectedHome extends React.Component<Home.Props, Home.State> {
       ...this.state,
       [name]: value
     } as Home.State;
-    const debounced: ({}) => void = _.debounce(this.fetchData, 300);
+    const debounced: Function = _.debounce(this.fetchData, 300);
 
     this.setState(newState, () => {
       debounced(this.normalizeFilters());

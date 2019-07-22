@@ -13,8 +13,8 @@ export function omit<T extends object, K extends keyof T>(target: T, ...omitKeys
   );
 }
 
-export function formatDate(input: string | number, format = 'MMMM Do, YYYY'): string {
-  const momentObj = moment(input);
+export function formatDate(input: number, format = 'MMMM Do, YYYY'): string {
+  const momentObj = moment.unix(input);
   if(!momentObj.isValid()) {
     return '';
   }

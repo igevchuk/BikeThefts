@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import { IncidentModel } from 'app/models';
 import { Icon } from 'semantic-ui-react';
 import {
@@ -13,13 +14,13 @@ import { formatDate } from 'app/utils';
 
 const BikePlaceholder = require('./assets/bike-placeholder.png');
 
-namespace IncidentListItemFoo {
+namespace IncidentListItem {
   export interface Props {
     incident: IncidentModel;
   }
 }
 
-export const IncidentListItem: React.SFC<IncidentListItemFoo.Props> = (props) => {
+export const IncidentListItem: React.SFC<IncidentListItem.Props> = (props) => {
   const { incident } = props;
   const {
     title,
@@ -28,6 +29,9 @@ export const IncidentListItem: React.SFC<IncidentListItemFoo.Props> = (props) =>
     address,
     id
   } = incident;
+
+  const foo = moment.unix(occurred_at).format()
+  console.log(foo)
 
   return (
     <IncidentContainer className="incident" data-test="incident-component">
