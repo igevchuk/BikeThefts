@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import * as sinon from 'sinon';
+import { shallow, mount, ShallowWrapper } from 'enzyme';
 import * as moment from 'moment';
 import { findByDataAttr } from 'app/testUtils';
 import { Calendar } from './../../Calendar';
@@ -34,5 +35,15 @@ describe('<Calendar />', () => {
     const input = findByDataAttr(wrapper, 'datepicker-input');
     // console.log(typeof input.props().value);
     // expect(input.props().value).toEqual(defaultProps.selectedDay);
+  });
+
+  describe(`'onSelect' function`, () => {
+    test(`calls 'onSelect' on dayChange event`, () => {
+      const spy = sinon.spy();
+      const wrapper = setup({ onSelect: spy });
+      const input = wrapper.find('[data-test="datepicker-input"]');
+      input.first().prop('onDayChange')(spy);
+      expect(spy.calledOnce).toBe(true);
+    });
   });
 });

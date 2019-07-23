@@ -172,45 +172,21 @@ describe('<Home />', () => {
     });
   });
 
-  // describe('if there is ');
-
-  // it('should render search text field', () => {
-  //   expect(setup().exists('.search-input'));
-  // });
-
-  // it('should render date picker', () => {
-  //   expect(setup().exists('.calendar'));
-  // });
-
-  // it('should render Clear filters button', () => {
-  //   expect(setup().exists(<button>CLEAR FILTERS</button>));
-  // });
-
-  // it('should render incidents list', () => {
-  //   expect(setup().exists('.incidents-list'));
-  // });
-
-  // describe('Message component', () => {
-  //   const wrapper = setup({ incidents: [] });
-  //   const message = findByDataAttr(wrapper, 'message-component');
-  //   test('renders message when result is empty', () => {
-  //     expect(message.length).toBe(1);
-  //   });
-
-  //   test('message displays text', () => {
-  //     expect(message.text()).toContain('No result found');
-  //   });
-  // });
-
-  // test('initial query state is an empty string', () => {
-  //   const wrapper = setup();
-  //   const initialQueryState = wrapper.state('query');
-  //   expect(initialQueryState).toBe('');
-  // });
-
-  // test('initial proximity state contains `Kyiv, Ukraine`', () => {
-  //   const wrapper = setup();
-  //   const inititalProximityState = wrapper.state('proximity');
-  //   expect(inititalProximityState).toContain('Kyiv, Ukraine');
-  // });
+  describe(`'clearFilters' function`, () => {
+    test(`calls 'clearFilters' on click event`, () => {
+      const spy = sinon.spy();
+      const props = {
+        ...defaultProps,
+        actions: {
+          ...defaultProps.actions,
+          fetchIncidents: spy
+        }
+      };
+      const wrapper = mount(<UnconnectedHome {...props} />);
+      const submitButton = wrapper.find('[data-test="reset-filters-button"]');
+      submitButton.first().simulate('click');
+      expect(spy.calledOnce).toBe(true);
+      // console.log(123, submitButton.props());
+    });
+  });
 });

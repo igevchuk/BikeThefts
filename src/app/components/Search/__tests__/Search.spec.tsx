@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as sinon from 'sinon';
-import { shallow, mount, ShallowWrapper } from 'enzyme';
+import { shallow, mount, ShallowWrapper, ReactWrapper } from 'enzyme';
 import { Provider } from 'react-redux';
 import configureMockStore from 'redux-mock-store';
 import { Search } from './../../Search';
@@ -32,6 +32,18 @@ describe('<Search />', () => {
       wrapper = setup({ value: 'foo' });
       const input = findByDataAttr(wrapper, 'search-input-component');
       expect(input.props().value).toEqual('foo');
+    });
+  });
+
+  describe(`'handleSearch' function`, () => {
+    test(`calls 'handleSearch' on change event`, () => {
+      const spy = sinon.spy();
+      const wrapper: ReactWrapper = mount(<Search handleSearch={spy} />);
+      wrapper
+        .find('input')
+        .first()
+        .simulate('change');
+      expect(spy.calledOnce).toBe(true);
     });
   });
 });
