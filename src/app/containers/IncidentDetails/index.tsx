@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import GoogleMapReact from 'google-map-react';
 import { Icon } from 'semantic-ui-react';
@@ -23,7 +24,6 @@ import {
 import { GOOGLE_MAPS_API_KEY } from 'app/constants';
 import { formatDate } from 'app/utils';
 
-const { connect } = require('react-redux');
 const BikePlaceholder = require('./assets/bike-placeholder.png');
 
 export namespace IncidentDetails {
@@ -47,29 +47,7 @@ export namespace IncidentDetails {
 
 export const actions = { ...omit(DetailsActions, 'Type'), ...omit(MapActions, 'Type') };
 
-@connect(
-  (state: RootState, ownProps) => {
-    const { detailsState } = state;
-    const { details, isLoading, error } = detailsState;
-    return { details, isLoading, error };
-  },
-  (dispatch: Dispatch): Pick<IncidentDetails.Props, 'actions'> => ({
-    actions: bindActionCreators(actions, dispatch)
-  })
-)
-@connect((state: RootState, ownProps) => {
-  const { mapState } = state;
-  const { coordinates, isLoading, hasLoaded, error } = mapState;
-  return {
-    map: {
-      coordinates,
-      isLoading,
-      hasLoaded,
-      error
-    }
-  };
-})
-export class IncidentDetails extends React.Component<IncidentDetails.Props> {
+export class UnconnectedIncidentDetails extends React.Component<IncidentDetails.Props> {
   componentDidMount() {
     this.fetchIncidentDetails();
   }
@@ -127,7 +105,7 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
       <GoogleMapReact
         bootstrapURLKeys={{ key: GOOGLE_MAPS_API_KEY }}
         defaultCenter={{ lat: latitude, lng: longitude }}
-        defaultZoom={16}
+        defaultZoom={14}
         data-test="incident-map"
       >
         <MapMarker lat={latitude} lng={longitude} text="Place of incident" />
@@ -191,3 +169,34 @@ export class IncidentDetails extends React.Component<IncidentDetails.Props> {
     );
   }
 }
+
+const mapStateToProps = (state: RootState) => {
+  const { detailsState, mapState } = state;
+  const { details, isLoading, error } = detailsState;
+  const { coordinates, hasLoaded, isLoading: mapIsLoading, error: mapError } = mapState;
+
+  return {
+    details,
+    isLoading,
+    error,
+    map: {
+      coordinates,
+      hasLoaded,
+      isLoading: mapIsLoading,
+      error: mapError
+    }
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => ({
+  actions: {
+    fetchIncidentDetails: (id: number) => dispatch(DetailsActions.fetchIncidentDetails(id)),
+    getGeoJson: (params: IncidentDetails.mapRequestParams) =>
+      dispatch(MapActions.getGeoJson(params))
+  }
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UnconnectedIncidentDetails);
