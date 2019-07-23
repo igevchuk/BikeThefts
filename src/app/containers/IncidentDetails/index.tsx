@@ -45,7 +45,7 @@ export namespace IncidentDetails {
   };
 }
 
-export const actions = { ...omit(DetailsActions, 'Type'), ...omit(MapActions, 'Type') };
+// export const actions = { ...omit(DetailsActions, 'Type'), ...omit(MapActions, 'Type') };
 
 export class UnconnectedIncidentDetails extends React.Component<IncidentDetails.Props> {
   componentDidMount() {
@@ -155,7 +155,10 @@ export class UnconnectedIncidentDetails extends React.Component<IncidentDetails.
             </IncidentInfo>
 
             <IncidentInfo>
-              <IncidentDescription className="incident-description" data-test="incident-location">
+              <IncidentDescription
+                className="incident-description"
+                data-test="incident-description"
+              >
                 {description || 'None'}
               </IncidentDescription>
             </IncidentInfo>
