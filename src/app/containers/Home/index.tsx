@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import * as moment from 'moment';
@@ -13,7 +12,7 @@ import { Calendar } from 'app/components/Calendar';
 import { Loader } from 'app/components/Loader';
 import { Search } from 'app/components/Search';
 import { IncidentList } from 'app/components';
-import { omit } from 'app/utils';
+import { SEARCH_RADIUS, RESULTS_MAX_QTY } from 'app/constants';
 
 export namespace Home {
   export interface Props extends RouteComponentProps<void> {
@@ -32,11 +31,12 @@ export namespace Home {
 
 export class UnconnectedHome extends React.Component<Home.Props, Home.State> {
   readonly defaultFilters = {
-    // occurred_after: moment().subtract(2, 'years'),
     occurred_after: null,
     occurred_before: moment(),
     query: '',
-    proximity: ''
+    proximity: '',
+    per_page: RESULTS_MAX_QTY,
+    proximity_square: SEARCH_RADIUS
   };
 
   constructor(props: Home.Props, context?: any) {
